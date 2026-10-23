@@ -1,0 +1,37 @@
+<?php
+declare(strict_types=1);
+require __DIR__ . '/lib.php';
+review_headers();
+$reviews = [];
+$available = true;
+try {
+    $query = review_db()->query("SELECT display_name,rating,service,message,published_at FROM reviews WHERE status='published' ORDER BY published_at DESC, id DESC LIMIT 30");
+    $reviews = $query->fetchAll();
+} catch (Throwable $error) {
+    error_log('Reviews page unavailable: ' . $error->getMessage());
+    $available = false;
+}
+$flash = review_take_flash();
+?><!doctype html>
+<html lang="en-NZ"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Customer Reviews | Davis Pest Solutions Auckland</title>
+<meta name="description" content="Read approved customer reviews of Davis Pest Solutions in Auckland and share your own experience for moderation.">
+<link rel="canonical" href="https://davispestsol.co.nz/reviews/">
+<meta property="og:type" content="website"><meta property="og:title" content="Customer Reviews | Davis Pest Solutions Auckland"><meta property="og:description" content="Read moderated customer reviews and share your experience with Davis Pest Solutions."><meta property="og:url" content="https://davispestsol.co.nz/reviews/"><meta property="og:image" content="https://davispestsol.co.nz/assets/images/client/your-filo-pestie-1280.webp">
+<meta name="twitter:card" content="summary_large_image"><link rel="icon" href="/assets/images/davis-logo.jpg"><link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Inter-latin.woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css"><link rel="stylesheet" href="/assets/css/refined.css"><link rel="stylesheet" href="/assets/css/premium.css"><link rel="stylesheet" href="/assets/css/art-direction.css"></head>
+<body data-page="reviews"><header data-header><nav class="noscript-nav" aria-label="Main navigation"><a href="/">Davis Pest Solutions</a><a href="/services/">Services</a><a href="/service-areas/">Areas we serve</a><a href="/reviews/">Reviews</a><a href="/about/">About</a><a href="/contact/#request-service">Request a quote</a></nav></header><main id="main">
+<section class="page-hero premium-page-hero"><div class="container premium-hero-grid"><div><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / Reviews</nav><span class="eyebrow">Customer experiences / Davis Pest Solutions</span><h1>What customers say.</h1><p class="lead">Reviews on this page are submitted to Davis and published only after moderation. We do not label them as Google reviews.</p><div class="hero-actions"><a class="btn btn--orange" href="#share-review">Share your experience</a><a class="btn btn--outline" href="/contact/#request-service">Request a quote</a></div></div><figure class="premium-photo"><img src="/assets/images/client/ej-vehicle-portrait-960.webp" width="960" height="640" alt="EJ beside the Davis Pest Solutions service vehicle" fetchpriority="high"><figcaption>Real customer feedback, reviewed before publication.</figcaption></figure></div></section>
+<section class="section section--white"><div class="container"><div class="section-head"><div><span class="eyebrow">Published feedback</span><h2>In customers' own words.</h2></div></div>
+<?php if ($reviews): ?><div class="reviews-grid"><?php foreach ($reviews as $review): ?><article class="review-card"><p class="review-stars" aria-label="<?= (int)$review['rating'] ?> out of 5 stars"><?= str_repeat('★', (int)$review['rating']) ?><span aria-hidden="true"><?= str_repeat('☆', 5 - (int)$review['rating']) ?></span></p><blockquote><?= nl2br(review_e($review['message'])) ?></blockquote><p class="review-by"><strong><?= review_e($review['display_name']) ?></strong><?php if ($review['service'] !== ''): ?> <span>· <?= review_e($review['service']) ?></span><?php endif; ?></p></article><?php endforeach; ?></div>
+<?php else: ?><div class="empty-reviews"><p>No customer reviews have been published here yet.</p><p>If Davis has helped you, you can share your experience below. Every submission is reviewed before it appears on this site.</p></div><?php endif; ?></div></section>
+<section class="section premium-band" id="share-review"><div class="container premium-columns"><div><span class="eyebrow">Share your experience</span><h2>Your feedback helps others decide.</h2><p>Your display name, rating, optional service and comments may appear publicly after approval. Please do not include private contact details or sensitive information in your review.</p><p>We use your submission for review moderation. It is stored in the website's private review database; only the site administrator can approve, hide or delete it. Contact Davis if you want a published review removed.</p></div><div class="review-form-wrap">
+<?php if ($flash): ?><p class="form-message <?= $flash['type'] === 'success' ? 'is-success' : 'is-error' ?>" role="status"><?= review_e($flash['message']) ?></p><?php endif; ?>
+<?php if ($available): ?><form method="post" action="/api/reviews.php" class="review-form"><input type="hidden" name="csrf" value="<?= review_e(review_token()) ?>"><div class="honeypot" aria-hidden="true"><label for="review-website">Leave this empty</label><input id="review-website" name="website" tabindex="-1" autocomplete="off"></div>
+<div class="field"><label for="display-name">Display name <span aria-hidden="true">*</span></label><input id="display-name" name="display_name" required minlength="2" maxlength="80" autocomplete="name"></div>
+<fieldset class="rating-field"><legend>Rating <span aria-hidden="true">*</span></legend><div class="rating-options"><?php for ($i=1;$i<=5;$i++): ?><label><input type="radio" name="rating" value="<?= $i ?>" required><span><?= $i ?> <?= $i === 1 ? 'star' : 'stars' ?></span></label><?php endfor; ?></div></fieldset>
+<div class="field"><label for="review-service">Service (optional)</label><input id="review-service" name="service" maxlength="100" placeholder="e.g. rodent control"></div>
+<div class="field"><label for="review-message">Your review <span aria-hidden="true">*</span></label><textarea id="review-message" name="message" required minlength="20" maxlength="2000" rows="6" aria-describedby="review-help"></textarea><small id="review-help">At least 20 characters. Please describe your own experience.</small></div>
+<button class="btn btn--orange" type="submit">Submit for review</button><p><small>Submission does not mean immediate publication.</small></p></form>
+<?php else: ?><p class="form-message is-error" role="status">Review submissions are temporarily unavailable. Please contact Davis directly.</p><?php endif; ?></div></div></section>
+</main><div data-footer><footer class="fallback-footer"><a href="/contact/#request-service">Request a quote</a> · <a href="tel:0204732847">02047-DAVIS</a> · <a href="mailto:ej@davispestsol.co.nz">Email Davis</a></footer></div><script src="/assets/js/shell.js" defer></script><script src="/assets/js/site.js" defer></script><script src="/assets/vendor/gsap.min.js" defer></script><script src="/assets/vendor/ScrollTrigger.min.js" defer></script><script src="/assets/js/motion.js" defer></script></body></html>

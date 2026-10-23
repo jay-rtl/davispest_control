@@ -1,0 +1,14 @@
+* {box-sizing:border-box}
+html {background:#fff}
+body {min-height:100svh;margin:0;background:#fff;color:#07372a;font-family:Arial,sans-serif}
+.intro-stage {min-height:100svh;display:grid;place-items:center;padding:90px 24px 48px}
+.intro-content {width:min(560px,100%);text-align:center}
+.intro-logo {display:block;width:min(350px,72vw);height:auto;margin:0 auto}
+.intro-kicker {margin:20px 0 5px;color:#9c3509;font-size:.75rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+.intro-tagline {margin:0;font-size:1.1rem;font-weight:700;letter-spacing:.01em}
+.intro-skip {position:fixed;top:24px;right:24px;z-index:2;padding:12px 18px;border:1px solid #07372a;background:#fff;color:#07372a;font-size:1rem;font-weight:700;text-decoration:none}
+.intro-skip:hover {background:#07372a;color:#fff}
+.intro-skip:focus-visible {outline:3px solid #c94d16;outline-offset:3px}
+.sr-only {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:600px) {.intro-stage {padding:75px 20px 40px}.intro-logo {width:min(250px,72vw)}.intro-skip {top:20px;right:20px}}
+@media(prefers-reduced-motion:reduce) {*,*::before,*::after {animation-duration:.01ms!important;transition-duration:.01ms!important}}

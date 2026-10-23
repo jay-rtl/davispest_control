@@ -1,0 +1,58 @@
+[
+  {
+    "slug": "cockroach-control", "name": "Cockroach control", "signs": "Droppings, egg cases, a persistent odour or activity after dark can all be useful clues.",
+    "intro": "Cockroaches can shelter close to warmth, food and moisture. Davis starts by finding where activity is occurring and what is helping it continue, then explains a treatment plan for the property.",
+    "assessment": "An assessment looks at likely harbourage, food and moisture sources, access and the spaces in use. Share where and when you have seen activity; that detail can help identify the problem.",
+    "preparation": "Preparation and re-entry advice depend on the treatment selected. Ask about children, pets, food preparation areas and any other site-specific concern before work begins.",
+    "faq": "Should I spray the cockroaches I can see?", "answer": "Visible activity may be only part of the problem. Tell Davis what you have seen before using another product so the assessment can account for it.",
+    "image": "ej-preparing-equipment-960.webp", "related": ["ant-control", "fly-control"]
+  },
+  {
+    "slug": "rodent-control", "name": "Rodent control", "signs": "Scratching, droppings, gnaw marks, nesting material and disturbed stored food are common reasons to request an inspection.",
+    "intro": "Rat and mouse activity needs more than a response to one sighting. Davis considers signs of activity, possible entry points and attractants before recommending control and prevention steps.",
+    "assessment": "Describe where you hear or see activity and whether it is inside, outside or near stored food. The assessment can then focus on access, shelter and food sources.",
+    "preparation": "Keep children and pets away from any control equipment as instructed. The appropriate placement, monitoring and proofing advice depend on the site.",
+    "faq": "Will sealing a gap solve the problem on its own?", "answer": "Proofing can be important, but an active problem may need assessment and control as well. Davis can advise on the sequence after looking at the property.",
+    "image": "rodent-control-stations-960.webp", "related": ["cockroach-control", "commercial-pest-control"]
+  },
+  {
+    "slug": "ant-control", "name": "Ant control", "signs": "Recurring trails, activity around food or ants entering through gaps can point to a wider problem.",
+    "intro": "Ant activity may follow food, moisture and access routes around a building. Davis assesses the observed trail and the setting before recommending a suitable approach.",
+    "assessment": "Note where ants appear, when the trail is active and whether the activity returns after cleaning. Those details help focus the inspection.",
+    "preparation": "Treatment advice is specific to the property. Avoid disturbing an active trail before the visit if it can be left safely; it may help locate the source.",
+    "faq": "Why do ants keep coming back?", "answer": "A visible trail can be connected to a source that has not yet been addressed. A site assessment is needed to decide what action makes sense.",
+    "image": "ej-preparing-equipment-960.webp", "related": ["cockroach-control", "spider-control"]
+  },
+  {
+    "slug": "fly-control", "name": "Fly control", "signs": "Persistent indoor flies, repeated activity near windows or a suspected breeding source are reasons to investigate.",
+    "intro": "Effective fly control begins with identifying the activity and possible breeding or entry conditions. Davis can review the site and discuss practical control and prevention options.",
+    "assessment": "Share where flies gather, how often they appear and whether food, waste or drains are nearby. The site and type of activity shape the recommendation.",
+    "preparation": "Sanitation, exclusion or maintenance may form part of the advice. Any treatment-specific preparation is explained before work is carried out.",
+    "faq": "Is treating the visible flies enough?", "answer": "Often the source and entry conditions also matter. An assessment helps identify what should be addressed at the site.",
+    "image": "ej-service-vehicle-960.webp", "related": ["cockroach-control", "commercial-pest-control"]
+  },
+  {
+    "slug": "wasp-control", "name": "Wasp control", "signs": "Concentrated flight paths, nest activity or repeated wasp presence near a building should be treated cautiously.",
+    "intro": "A wasp nest can create a serious sting risk. Davis assesses the activity and the surrounding setting before advising on the safest practical next step.",
+    "assessment": "Tell Davis where the activity is and whether people or pets use the area. You do not need to approach or disturb a suspected nest to describe it.",
+    "preparation": "Keep clear of the suspected nest and follow the technician's site-specific instructions. Do not attempt to remove a nest yourself.",
+    "faq": "Should I block the nest entrance?", "answer": "No. Disturbing or blocking a suspected nest can increase risk. Keep your distance and request professional advice.",
+    "image": "ej-service-vehicle-960.webp", "related": ["spider-control", "residential-pest-control"]
+  },
+  {
+    "slug": "flea-treatment", "name": "Flea treatment", "signs": "Bites, pet scratching or small jumping insects around floors and furnishings may indicate flea activity.",
+    "intro": "Flea management needs attention to the property, the life cycle and the animals that use the space. Davis explains preparation, treatment and aftercare for the specific situation.",
+    "assessment": "Describe where activity is most noticeable and whether pets have been treated by a veterinarian. The property assessment helps determine the next step.",
+    "preparation": "Preparation and aftercare matter. Follow the instructions given for the chosen treatment and coordinate pet care with your veterinarian.",
+    "faq": "Why might I still notice fleas after treatment?", "answer": "The flea life cycle can affect what you notice afterwards. Davis can explain what to expect and when to follow up for the chosen treatment.",
+    "image": "ej-preparing-equipment-960.webp", "related": ["spider-control", "residential-pest-control"]
+  },
+  {
+    "slug": "spider-control", "name": "Spider control", "signs": "Recurring webbing, spiders around building edges or repeated activity in the same places can help locate the problem.",
+    "intro": "Spider management depends on the species, the activity and the property. Davis reviews the places spiders shelter and what may be attracting their prey.",
+    "assessment": "Point out recurring webs and the places where you have seen spiders. An inspection can consider building edges, sheltered spaces and associated insect activity.",
+    "preparation": "Advice on cleaning, exclusion and any treatment is specific to the site. Tell Davis about pets and areas that need special care.",
+    "faq": "Will removing webs stop spiders returning?", "answer": "Removing webs helps with housekeeping, but recurring activity may need a closer look at shelter and prey around the property.",
+    "image": "ej-service-vehicle-960.webp", "related": ["ant-control", "fly-control"]
+  }
+]

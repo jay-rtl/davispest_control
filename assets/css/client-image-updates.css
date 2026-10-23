@@ -1,0 +1,11 @@
+.tuatara-story__mark--symbol img{width:min(280px,100%);height:auto;opacity:1;filter:none}
+.area-hero-layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}
+.area-hero-copy{min-width:0}
+.area-hero-photo{margin:0;min-width:0;width:100%;max-width:460px;justify-self:center;border-radius:22px;overflow:hidden;box-shadow:0 18px 45px rgba(6,48,32,.12)}
+.area-hero-photo img{display:block;width:100%;max-width:100%;height:auto}
+@media(max-width:800px){.area-hero-layout{grid-template-columns:minmax(0,1fr);gap:28px}.area-hero-photo{max-width:440px}.tuatara-story__mark--symbol img{width:min(250px,100%);opacity:1}}
+
+/* Frame the supplied artwork inside its white interior without altering the logo. */
+.tuatara-story__mark--symbol{border:0;background:transparent;padding:18px}
+.tuatara-symbol-crop{position:relative;display:block;width:min(280px,100%);aspect-ratio:302 / 135;overflow:hidden}
+.tuatara-story__mark--symbol .tuatara-symbol-crop img{position:absolute;left:-6.622517%;top:-17.777778%;width:111.258278%;max-width:none;height:auto;opacity:1}

@@ -1,0 +1,14 @@
+.build/
+.pages/
+backup/
+tmp/
+source-assets/
+*.zip
+*.sqlite
+*.db
+*.log
+.env*
+node_modules/
+preview-router.php
+preview.cjs
+

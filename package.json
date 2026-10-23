@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "davis-pest-solutions-site",
+  "scripts": {
+    "build": "node scripts/build-pages.mjs && node scripts/integrate-site.mjs",
+    "check": "node scripts/check-site.mjs"
+  }
+}

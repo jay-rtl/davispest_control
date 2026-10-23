@@ -1,0 +1,27 @@
+import assert from 'node:assert/strict';
+const base = process.env.TEST_REVIEW_BASE || 'http://127.0.0.1:8771';
+const password = process.env.TEST_REVIEW_PASSWORD;
+if (!/^http:\/\/127\.0\.0\.1:\d+$/.test(base) || !password) throw Error('Use a local test server and TEST_REVIEW_PASSWORD.');
+let cookie = '';
+const request = async (url, options={}) => {
+  const response = await fetch(base+url,{redirect:'manual',...options,headers:{...(options.headers||{}),...(cookie?{Cookie:cookie}:{})}});
+  const set = response.headers.get('set-cookie'); if (set) cookie=set.split(';')[0];
+  return response;
+};
+const tokenFrom = html => { const token=html.match(/name="csrf" value="([a-f0-9]{64})"/); assert.ok(token,'CSRF token found'); return token[1]; };
+const form = fields => new URLSearchParams(fields).toString();
+const reviewName = `Local QA ${Date.now()}`;
+let response=await request('/api/public-reviews.php'); assert.equal(response.status,200); assert.deepEqual(await response.json(),[]);
+response=await request('/reviews/'); assert.equal(response.status,200); let html=await response.text(); let csrf=tokenFrom(html);
+response=await request('/api/reviews.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:form({display_name:reviewName,rating:'5',service:'Rodent control',message:'A genuine test-only review for the local moderation workflow.',csrf:'bad'})}); assert.equal(response.status,403);
+response=await request('/api/reviews.php',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:form({display_name:reviewName,rating:'5',service:'Rodent control',message:'A test-only review for the local moderation workflow and display.',csrf})}); assert.equal(response.status,303);
+response=await request('/api/public-reviews.php'); assert.deepEqual(await response.json(),[],'pending review stays private');
+response=await request('/admin/reviews/'); assert.equal(response.status,200); html=await response.text(); assert.ok(!html.includes(reviewName),'unauthenticated admin has no review details'); csrf=tokenFrom(html);
+response=await request('/admin/reviews/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:form({action:'login',password,csrf})}); assert.equal(response.status,303);
+response=await request(`/admin/reviews/?q=${encodeURIComponent(reviewName)}`); assert.equal(response.status,200); html=await response.text(); assert.ok(html.includes(reviewName)); csrf=tokenFrom(html); const id=html.match(/name="id" value="(\d+)"/); assert.ok(id);
+const action = async fields => { const result=await request('/admin/reviews/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:form({csrf,id:id[1],...fields})}); assert.equal(result.status,303); };
+await action({action:'approve'}); response=await request('/api/public-reviews.php'); assert.ok((await response.json()).some(item=>item.display_name===reviewName),'approved review becomes public');
+await action({action:'hide'}); response=await request('/api/public-reviews.php'); assert.deepEqual(await response.json(),[],'hidden review disappears');
+await action({action:'reject'}); response=await request('/api/public-reviews.php'); assert.deepEqual(await response.json(),[],'rejected review stays hidden');
+await action({action:'delete',confirm_delete:'yes'}); response=await request(`/admin/reviews/?q=${encodeURIComponent(reviewName)}`); assert.ok(!(await response.text()).includes(`<h2>${reviewName}</h2>`),'deleted review removed');
+console.log('Review flow passed: CSRF, pending isolation, admin login, approval, hide, reject and confirmed delete.');

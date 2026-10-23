@@ -1,0 +1,6 @@
+/* External styles are permitted by the site's Content Security Policy. */
+body[data-page="areas"] .service-map-card {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto 36px;
+}
