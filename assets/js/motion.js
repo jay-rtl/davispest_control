@@ -59,7 +59,7 @@
       items.forEach(item => seen.add(item));
     });
 
-  unique(select('.location-group, .faq, .premium-columns > *, .editorial-grid > *, .cta > *, .area-coverage-copy, .contact-info, .servicem8-intro'))
+  unique(select('.location-card, .faq, .premium-columns > *, .editorial-grid > *, .cta > *, .area-coverage-copy, .contact-info, .servicem8-intro'))
     .forEach((item, index) => add(gsap.fromTo(item,
       {y: mobile ? 17 : 30, opacity: .74, scale: .99},
       {y: 0, opacity: 1, scale: 1, ease: 'none',

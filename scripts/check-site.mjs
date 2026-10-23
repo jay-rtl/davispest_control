@@ -34,5 +34,10 @@ for (const route of [...pages,'/reviews/']) if (!sitemap.includes(`https://davis
 for (const location of JSON.parse(fs.readFileSync(path.join(root,'content/locations.json'),'utf8')).filter(item=>item.status!=='published')) {
   if (sitemap.includes(`/pest-control/${location.slug}/`)) errors.push(`Unpublished location in sitemap: ${location.slug}`);
 }
+const areasHtml=fs.readFileSync(path.join(root,'service-areas/index.html'),'utf8');
+for (const location of locations) {
+  const card=areasHtml.match(new RegExp(`<a class="location-card" href="/pest-control/${location.slug}/">([\\s\\S]*?)<\\/a>`))?.[1];
+  if (!card || !location.directoryContext || !card.includes(location.directoryContext)) errors.push(`Missing linked suburb context: ${location.slug}`);
+}
 if (errors.length) { console.error(errors.join('\n')); process.exit(1); }
-console.log(`Checked ${pages.length} static pages: unique titles, descriptions, canonicals, H1s, structured-data JSON, local URL targets and sitemap entries.`);
+console.log(`Checked ${pages.length} static pages: metadata, headings, structured data, local links, sitemap entries and linked suburb context.`);

@@ -207,18 +207,21 @@ body[data-page="home"] .step p {grid-column: 3; font-size: .93rem;}
 .premium-columns {gap: clamp(40px, 6vw, 90px);}
 .premium-columns h2 {font-size: clamp(2.5rem, 3.4vw, 3.9rem);}
 .location-directory {background: var(--paper);}
-.location-group {border-top: 1px solid var(--forest); padding: 28px 0;}
-.location-directory .container {max-width: 1100px; counter-reset: area;}
+.location-directory .container {max-width: 1100px;}
 .directory-heading {display: grid; grid-template-columns: minmax(0,1fr) minmax(240px,.7fr); align-items: end; gap: 60px; margin-bottom: 42px;}
 .directory-heading h2 {max-width: 660px; margin: 15px 0 0;}
 .directory-heading p {max-width: 390px; margin: 0 0 5px; color: #4d6257; font-size: 1.05rem;}
-.location-directory .location-group {grid-template-columns: 50px minmax(0,1fr) auto; align-items: center; gap: 24px;}
-.location-directory .location-group::before {counter-increment: area; content: counter(area, decimal-leading-zero); color: var(--accent); font-size: .78rem; font-weight: 800; letter-spacing: .08em;}
-.location-directory .location-group h3 {font-size: clamp(1.1rem, 1.8vw, 1.45rem);}
-.location-directory .location-links a {display: inline-flex; align-items: center; min-height: 44px; padding: 6px 0; border: 0; border-bottom: 1px solid currentColor; background: transparent; color: var(--forest);}
-.location-directory .location-links a:hover {color: var(--accent);}
-.location-directory .directory-note {margin: 34px 0 0; max-width: 690px;}
-.location-directory .directory-note .text-link {display: inline; margin: 0;}
+.location-cards {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;}
+.location-card {display: flex; flex-direction: column; min-width: 0; min-height: 186px; padding: 26px 28px; border: 1px solid #28463a; border-radius: 2px; background: #112a20; color: #fff; text-decoration: none; transition: background .25s ease, transform .25s ease, border-color .25s ease;}
+a.location-card:hover, a.location-card:focus-visible {background: #183a2b; border-color: #75bd8e; transform: translateY(-3px);}
+.location-card-region {color: #f4f7f3; font-size: .85rem; font-weight: 800; line-height: 1.35;}
+.location-card-name {margin: 16px 0 0; color: #a8e2b6; font-size: clamp(1.25rem, 1.8vw, 1.6rem); line-height: 1.2;}
+.location-card-name span {font-size: .77em;}
+.location-card-context {display: block; margin-top: auto; padding-top: 20px; color: #c8d7cd; font-size: .96rem; line-height: 1.5;}
+.location-card--help {border-color: #afc3b5; background: #e7ece4;}
+.location-card--help .location-card-region, .location-card--help .location-card-name {color: var(--forest);}
+.location-card--help .location-card-context {margin: 0; padding-top: 13px; color: #42594b;}
+.location-card--help .text-link {display: inline-flex; align-items: center; min-height: 44px; margin-top: auto; color: #9d3909;}
 body[data-page="areas"] .area-hero-photo {max-width: 480px; border-radius: 0; box-shadow: none;}
 body[data-page="areas"] .area-coverage {background: var(--pale);}
 #coverage-map, #suburb-directory {scroll-margin-top: 104px;}
@@ -378,11 +381,10 @@ body[data-page="contact"] .contact-ej-card img, body[data-page="contact"] .conta
   .mobile-cta {left: 0; right: 0; bottom: 0; gap: 8px; padding: 8px 12px max(8px, env(safe-area-inset-bottom)); border: 0; border-top: 1px solid rgba(255,255,255,.22); border-radius: 0; background: var(--forest-deep); box-shadow: none; backdrop-filter: none;}
   .mobile-cta .btn {border-radius: 2px;}
   .mobile-cta .btn--green {border: 1px solid #dce9de; background: transparent; color: #fff;}
-  .location-directory .location-group {grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 18px 0;}
-  .location-directory .location-group::before {display: none;}
-  .location-directory .location-group h3 {font-size: 1rem; line-height: 1.3;}
-  .location-directory .location-links {justify-content: flex-end;}
-  .location-directory .location-links a {font-size: .91rem; white-space: nowrap;}
+  .location-cards {grid-template-columns: 1fr; gap: 12px;}
+  .location-card {min-height: 168px; padding: 22px;}
+  .location-card-name {font-size: 1.3rem;}
+  .location-card-context {padding-top: 16px; font-size: .93rem;}
   .footer {padding: 55px 20px calc(105px + env(safe-area-inset-bottom));}
   .footer>.container {width: 100%;}
   .footer-grid {display: block;}
