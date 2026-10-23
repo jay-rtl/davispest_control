@@ -1,5 +1,4 @@
 (() => {
-  const skip = document.querySelector('.intro-skip');
   let leaving = false;
   const leave = () => {
     if (leaving) return;
@@ -7,7 +6,6 @@
     try { sessionStorage.setItem('davis-intro-seen', '1'); } catch {}
     location.replace('/');
   };
-  skip.addEventListener('click', event => { event.preventDefault(); leave(); });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') { event.preventDefault(); leave(); }
   });

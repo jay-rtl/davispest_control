@@ -10,6 +10,7 @@ const staticDirectories = [
   'pest-control', 'residential-pest-control', 'service-areas', 'services'
 ];
 const rewrite = source => source
+  .replace(/content="0;url=\//g, `content="0;url=${base}/`)
   .replace(/((?:href|src|action|poster)=["'])\/(?!\/)/g, `$1${base}/`)
   .replace(/(["'])\/(?!\/)(?=(?:assets|about|commercial-pest-control|contact|faqs|intro|pest-control|residential-pest-control|reviews|service-areas|services|api)\/|["'])/g, `$1${base}/`)
   .replace(/(,\s*)\/(assets\/)/g, `$1${base}/$2`)
