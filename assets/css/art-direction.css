@@ -169,7 +169,7 @@ body[data-page="home"] .step p {grid-column: 3; font-size: .93rem;}
 #customer-voices .google-reviews-head > div {max-width:780px;}
 #customer-voices .google-reviews-head h2 {max-width:760px;}
 #customer-voices .google-reviews-head p {max-width:600px;color:#4d6257;}
-.google-reviews-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+.google-reviews-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch;}
 .google-review {min-width:0;min-height:255px;padding:24px;display:flex;flex-direction:column;background:#fff;border:1px solid #e2e7e2;border-radius:14px;box-shadow:0 3px 12px rgba(18,45,32,.045);}
 .google-review__person {display:flex;align-items:center;gap:12px;margin-bottom:18px;}
 .google-review__avatar {width:42px;height:42px;flex:none;display:grid;place-items:center;border-radius:50%;background:#dce8e4;color:#235247;font-weight:800;}
@@ -179,10 +179,12 @@ body[data-page="home"] .step p {grid-column: 3; font-size: .93rem;}
 .google-review__person div > span {display:block;margin-top:3px;color:#69776e;font-size:.76rem;}
 .google-review__stars {color:#e8a600;font-size:1.12rem;letter-spacing:.1em;line-height:1;margin:0 0 16px;}
 .google-review blockquote {font-family:Inter,Arial,sans-serif;font-size:.96rem;font-weight:450;line-height:1.65;letter-spacing:0;margin:0;overflow-wrap:anywhere;color:#26372d;}
+.google-review blockquote p {margin:0;}
+.google-review blockquote p + p {margin-top:1.05em;}
 .google-reviews-all {display:inline-flex;gap:20px;align-items:center;margin-top:30px;font-weight:800;color:var(--forest);border-bottom:2px solid var(--orange);padding-bottom:6px;}
 .google-reviews-all:hover {color:var(--orange);}
-@media(max-width:900px) {.google-reviews-grid {grid-template-columns:repeat(2,minmax(0,1fr));}}
-@media(max-width:600px) {#customer-voices .google-reviews-head {display:block;margin-bottom:28px;} .google-reviews-grid {grid-template-columns:1fr;} .google-review {min-height:0;padding:21px;}}
+@media(max-width:800px) {.google-reviews-grid {grid-template-columns:1fr;}}
+@media(max-width:600px) {#customer-voices .google-reviews-head {display:block;margin-bottom:28px;} .google-review {min-height:0;padding:21px;}}
 #customer-voices .section-head {margin-bottom: 38px;}
 #customer-voices .section-head > div:first-child {max-width: 800px;}
 #customer-voices h2 {margin-top: 14px;}
