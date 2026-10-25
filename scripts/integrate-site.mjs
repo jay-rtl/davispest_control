@@ -7,7 +7,7 @@ const locations = JSON.parse(fs.readFileSync(path.join(root,'content/locations.j
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const original = ['index.html','about/index.html','residential-pest-control/index.html','commercial-pest-control/index.html','services/index.html','service-areas/index.html','faqs/index.html','contact/index.html'];
 const generated = [...services.map(item=>`services/${item.slug}/index.html`),...locations.map(item=>`pest-control/${item.slug}/index.html`)];
-const fallbackNav = `<header data-header><nav class="noscript-nav" aria-label="Main navigation"><a href="/">Davis Pest Solutions</a><a href="/services/">Services</a><a href="/service-areas/">Areas we serve</a><a href="/#customer-voices">Reviews</a><a href="/about/">About</a><a href="/contact/#request-service">Request a quote</a></nav></header>`;
+const fallbackNav = `<header data-header><nav class="noscript-nav" aria-label="Main navigation"><a href="/">Davis Pest Solutions</a><a href="/services/">Services</a><a href="/service-areas/">Areas we serve</a><a href="/about/">About</a><a href="/contact/#request-service">Request a quote</a></nav></header>`;
 const fallbackFooter = `<div data-footer><footer class="fallback-footer"><a href="/contact/#request-service">Request a quote</a> · <a href="tel:0204732847">02047-DAVIS</a> · <a href="mailto:ej@davispestsol.co.nz">Email Davis</a></footer></div>`;
 for (const name of [...original,...generated]) {
   const file = path.join(root,name);
