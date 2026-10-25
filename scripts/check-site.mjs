@@ -6,6 +6,9 @@ const services = JSON.parse(fs.readFileSync(path.join(root,'content/services.jso
 const locations = JSON.parse(fs.readFileSync(path.join(root,'content/locations.json'),'utf8')).filter(item=>item.status==='published');
 const pages = ['/', '/about/', '/residential-pest-control/', '/commercial-pest-control/', '/services/', '/service-areas/', '/faqs/', '/contact/', ...services.map(item=>`/services/${item.slug}/`), ...locations.map(item=>`/pest-control/${item.slug}/`)];
 const errors=[]; const titles=new Map();
+const socialImage='https://davispestsol.co.nz/assets/images/client/davis2.png';
+const socialAsset=fs.readFileSync(path.join(root,'assets/images/client/davis2.png'));
+if (socialAsset.toString('hex',0,8)!=='89504e470d0a1a0a' || socialAsset.readUInt32BE(16)!==1704 || socialAsset.readUInt32BE(20)!==923) errors.push('Social preview PNG dimensions do not match metadata');
 for (const route of pages) {
   const file=path.join(root,route,'index.html');
   if (!fs.existsSync(file)) { errors.push(`Missing ${route}`); continue; }
@@ -19,6 +22,14 @@ for (const route of pages) {
   titles.set(title,route);
   if (canonical !== `https://davispestsol.co.nz${route}`) errors.push(`Canonical mismatch: ${route}`);
   if (h1 !== 1) errors.push(`Expected one H1 on ${route}; got ${h1}`);
+  const metas=[...html.matchAll(/<meta\s+[^>]*>/gi)].map(match=>match[0]);
+  const meta=(key,attribute='property')=>metas.filter(tag=>tag.includes(`${attribute}="${key}"`));
+  if (meta('og:image').length!==1 || !meta('og:image')[0].includes(`content="${socialImage}"`)) errors.push(`Social image missing or duplicated: ${route}`);
+  for (const [key,value] of [['og:image:type','image/png'],['og:image:width','1704'],['og:image:height','923']]) {
+    if (meta(key).length!==1 || !meta(key)[0].includes(`content="${value}"`)) errors.push(`Incorrect ${key}: ${route}`);
+  }
+  if (meta('twitter:image','name').length!==1 || !meta('twitter:image','name')[0].includes(`content="${socialImage}"`)) errors.push(`Twitter image missing or duplicated: ${route}`);
+  if (meta('og:url').length!==1 || !meta('og:url')[0].includes(`content="https://davispestsol.co.nz${route}"`)) errors.push(`Open Graph URL mismatch: ${route}`);
   for (const block of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)) {
     try { JSON.parse(block[1]); } catch { errors.push(`Invalid structured data JSON: ${route}`); }
   }

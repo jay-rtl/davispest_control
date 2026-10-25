@@ -5,6 +5,7 @@ import {fileURLToPath} from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const output = path.join(root, '.pages');
 const base = `/${process.env.GITHUB_REPOSITORY?.split('/')[1] || 'davispest_control'}`;
+const previewOrigin = `https://${process.env.GITHUB_REPOSITORY?.split('/')[0] || 'jay-rtl'}.github.io${base}`;
 const staticDirectories = [
   'about', 'commercial-pest-control', 'contact', 'faqs', 'intro',
   'pest-control', 'residential-pest-control', 'service-areas', 'services'
@@ -28,6 +29,9 @@ const copy = (relative, destination = relative) => {
   }
   if (/\.(?:html|css|js)$/.test(sourcePath) && !relative.startsWith(`assets${path.sep}vendor${path.sep}`)) {
     let content = rewrite(fs.readFileSync(sourcePath, 'utf8'));
+    if (destination.endsWith('.html')) {
+      content = content.replace(/(<meta\s+(?:property="og:(?:url|image)"|name="twitter:image")\s+content=")https:\/\/davispestsol\.co\.nz(\/[^\"]*)(")/gi, `$1${previewOrigin}$2$3`);
+    }
     if (destination.replaceAll('\\', '/') === 'index.html') {
       content = content.replace(/<script src="[^\"]*\/assets\/js\/home-reviews\.js" defer><\/script>/, '');
       content = content.replaceAll('Read or leave a review', 'About customer reviews')
@@ -48,7 +52,8 @@ for (const directory of staticDirectories) copy(directory);
 const reviews = `<!doctype html><html lang="en-NZ"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Customer Reviews Preview | Davis Pest Solutions</title><link rel="stylesheet" href="${base}/assets/css/site.css"><link rel="stylesheet" href="${base}/assets/css/refined.css"><link rel="stylesheet" href="${base}/assets/css/premium.css"><link rel="stylesheet" href="${base}/assets/css/art-direction.css"></head><body data-page="reviews"><header data-header><nav class="noscript-nav" aria-label="Main navigation"><a href="${base}/">Home</a><a href="${base}/services/">Services</a><a href="${base}/contact/">Contact</a></nav></header><main id="main"><section class="page-hero"><div class="container"><span class="eyebrow">GitHub Pages preview</span><h1>Customer reviews</h1><p class="lead">Review submission and moderation are unavailable in this static preview. They require the site's PHP hosting and database.</p><a class="btn btn--orange" href="${base}/contact/#request-service">Contact Davis</a></div></section></main><div data-footer></div><script src="${base}/assets/js/shell.js" defer></script><script src="${base}/assets/js/site.js" defer></script></body></html>`;
 fs.mkdirSync(path.join(output, 'reviews'), {recursive: true});
 fs.writeFileSync(path.join(output, 'reviews', 'index.html'), reviews);
-fs.writeFileSync(path.join(output, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
+// Crawlers need to fetch the page to read noindex and its social preview tags.
+fs.writeFileSync(path.join(output, 'robots.txt'), 'User-agent: *\nAllow: /\n');
 fs.writeFileSync(path.join(output, '.nojekyll'), '');
 
 const htmlFiles = [];
@@ -64,5 +69,6 @@ for (const file of htmlFiles) {
   const content = fs.readFileSync(file, 'utf8');
   if (!content.includes('noindex, nofollow')) throw Error(`Preview indexing not disabled: ${file}`);
   if (/(?:href|src)="\/(?!davispest_control\/)/.test(content)) throw Error(`Root path remains: ${file}`);
+  if (content.includes('content="https://davispestsol.co.nz/assets/images/client/davis2.png"')) throw Error(`Production social image URL remains in preview: ${file}`);
 }
 console.log(`Built ${htmlFiles.length} noindex static preview pages at ${base}/. PHP routes excluded.`);
