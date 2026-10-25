@@ -38,6 +38,19 @@ const areasHtml=fs.readFileSync(path.join(root,'service-areas/index.html'),'utf8
 for (const location of locations) {
   const card=areasHtml.match(new RegExp(`<a class="location-card" href="/pest-control/${location.slug}/">([\\s\\S]*?)<\\/a>`))?.[1];
   if (!card || !location.directoryContext || !card.includes(location.directoryContext)) errors.push(`Missing linked suburb context: ${location.slug}`);
+  const html=fs.readFileSync(path.join(root,'pest-control',location.slug,'index.html'),'utf8');
+  for (const field of ['subheading','intro','local','services','cta']) {
+    const encoded=String(location[field]).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    if (!html.includes(encoded)) errors.push(`Missing ${field} copy: ${location.slug}`);
+  }
+  for (const suburb of location.nearby) if (!html.includes(`<li>${suburb}</li>`)) errors.push(`Missing nearby suburb ${suburb}: ${location.slug}`);
+  if (!html.includes(`Pest Control in ${location.name} and Surrounding Suburbs`)) errors.push(`Incorrect H1: ${location.slug}`);
+  if (!html.includes('View All Auckland Service Areas')) errors.push(`Missing area return link: ${location.slug}`);
+  const nearbyBlock=html.match(/<ul class="nearby-suburbs">([\s\S]*?)<\/ul>/)?.[1];
+  if (!nearbyBlock || nearbyBlock.includes('<a ')) errors.push(`Nearby suburbs must be plain text: ${location.slug}`);
 }
+if (!areasHtml.includes('Pest Control Across Auckland.') || !areasHtml.includes("Don't see your suburb?")) errors.push('Missing revised area directory headings');
+const oldPage=fs.readFileSync(path.join(root,'pest-control/papatoetoe/index.html'),'utf8');
+if (!oldPage.includes('noindex') || !oldPage.includes('/pest-control/manukau/')) errors.push('Papatoetoe legacy route does not point to Manukau');
 if (errors.length) { console.error(errors.join('\n')); process.exit(1); }
 console.log(`Checked ${pages.length} static pages: metadata, headings, structured data, local links, sitemap entries and linked suburb context.`);

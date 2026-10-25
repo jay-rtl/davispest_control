@@ -1,37 +1,52 @@
 [
   {
-    "slug": "mount-eden", "name": "Mount Eden", "region": "Central Auckland", "status": "published", "evidence": "Shown inside the client-supplied Auckland service-area map.", "directoryContext": "Serving Mount Eden and surrounding Central Auckland suburbs.",
-    "intro": "Davis Pest Solutions provides pest-control enquiries for Mount Eden homes and businesses. Tell EJ what you have noticed and where; the recommendation starts with the property in front of him.",
-    "local": "Mount Eden sits within the central part of the Auckland coverage area shown on the Davis map. For a house, rental or workplace, the useful starting point is the pattern of activity: where pests appear, how often and what spaces are affected.",
-    "focus": "If activity appears in a kitchen or food-storage area, note the time and exact place. If it is in a roof space or outdoors, describe the sounds, entry points or trails you can see without disturbing them.",
-    "faq": "Can I request help for a rental property in Mount Eden?", "answer": "Yes. Share the property type and the pest signs in the quote request so Davis can discuss the right next step and access arrangements.", "related": ["glenfield", "henderson"]
+    "slug": "mount-eden", "name": "Mount Eden", "region": "Central Auckland", "status": "published", "evidence": "Client-approved service-area revision.",
+    "directoryContext": "Serving Mount Eden and surrounding Central Auckland suburbs.",
+    "subheading": "Residential and Commercial Pest Control in Central Auckland",
+    "intro": "Davis Pest Solutions provides professional pest control for homes, rental properties, cafés, restaurants and businesses across Mount Eden.",
+    "local": "From character villas to commercial premises, we offer targeted treatments and practical advice to manage pest activity and help prevent recurring problems.",
+    "services": "Treatments for ants, cockroaches, spiders, rodents, flies, fleas and wasps. Scheduled pest management programmes are also available for businesses.",
+    "nearby": ["Epsom", "Balmoral", "Kingsland", "Sandringham", "Eden Terrace", "Mount Roskill", "CBD"],
+    "cta": "Professional pest control tailored to your home or business."
   },
   {
-    "slug": "glenfield", "name": "Glenfield", "region": "North Shore", "status": "published", "evidence": "Shown inside the client-supplied Auckland service-area map.", "directoryContext": "North Shore pest-control enquiries from Glenfield homes and businesses.",
-    "intro": "Looking for pest control in Glenfield? Davis supports enquiries on the North Shore and can help you work out which service fits the signs at your property.",
-    "local": "Glenfield is marked within the northern part of the Davis service-area map. A site-specific assessment matters because the same visible pest can have different entry and shelter points from one property to the next.",
-    "focus": "For scratching or droppings, note where signs occur and when you first noticed them. For insects, note whether activity is indoors, at a doorway or around an outdoor structure.",
-    "faq": "What should I send with a Glenfield enquiry?", "answer": "Your suburb, property type, the signs you have seen and a safe description of where they occur are enough to start a conversation.", "related": ["mount-eden", "howick"]
+    "slug": "glenfield", "name": "Glenfield", "region": "North Shore", "status": "published", "evidence": "Client-approved service-area revision.",
+    "directoryContext": "Serving Glenfield and surrounding North Shore suburbs.",
+    "subheading": "Residential and Commercial Pest Control on the North Shore",
+    "intro": "Davis Pest Solutions provides professional pest control for homes, rental properties and businesses throughout Glenfield.",
+    "local": "From rodents in roof spaces to ants, cockroaches and spiders around the home, we provide targeted treatments and practical pest management solutions.",
+    "services": "Treatments for ants, cockroaches, spiders, rodents, flies, fleas and wasps. Scheduled commercial pest management programmes are also available.",
+    "nearby": ["Bayview", "Birkdale", "Birkenhead", "Wairau Valley", "Takapuna", "Totara Vale", "Milford"],
+    "cta": "Reliable pest control for your home or business."
   },
   {
-    "slug": "henderson", "name": "Henderson", "region": "West Auckland", "status": "published", "evidence": "Shown inside the client-supplied Auckland service-area map.", "directoryContext": "Pest-control enquiries for Henderson and nearby West Auckland properties.",
-    "intro": "Davis Pest Solutions handles pest-control enquiries from Henderson. EJ can discuss the visible signs and assess what is happening before recommending a treatment plan.",
-    "local": "Henderson appears inside the western coverage boundary on the client-supplied map. Pest problems at homes and commercial sites need different access, timing and aftercare considerations, so the property details matter.",
-    "focus": "If the issue is recurring, note any pattern: the room, time of day and whether the activity has moved. This helps distinguish a one-off sighting from an active problem needing closer investigation.",
-    "faq": "Do you discuss prevention as well as treatment in Henderson?", "answer": "The existing Davis service process includes aftercare and prevention advice where relevant. The recommendations depend on what the assessment finds.", "related": ["mount-eden", "papatoetoe"]
+    "slug": "henderson", "name": "Henderson", "region": "West Auckland", "status": "published", "evidence": "Client-approved service-area revision.",
+    "directoryContext": "Serving Henderson and surrounding West Auckland suburbs.",
+    "subheading": "Residential and Commercial Pest Control in West Auckland",
+    "intro": "Davis Pest Solutions provides professional pest control for homeowners, landlords, property managers and businesses throughout Henderson.",
+    "local": "From residential homes to offices, warehouses and food premises, we deliver targeted treatments and practical pest management solutions.",
+    "services": "Treatments for ants, cockroaches, spiders, rodents, flies, fleas and wasps. Commercial pest monitoring and scheduled servicing are also available.",
+    "nearby": ["Sunnyvale", "Te Atatū South", "Glendene", "Rānui", "Henderson Valley", "Massey", "Blockhouse Bay", "New Lynn", "Westgate"],
+    "cta": "Practical pest control for residential and commercial properties."
   },
   {
-    "slug": "howick", "name": "Howick", "region": "East Auckland", "status": "published", "evidence": "Shown inside the client-supplied Auckland service-area map.", "directoryContext": "A local starting point for pest concerns in Howick and East Auckland.",
-    "intro": "For a pest concern in Howick, Davis can help identify a practical next step for your home or workplace. Describe the activity and the affected area when requesting a quote.",
-    "local": "Howick is shown near the eastern side of the Davis Auckland coverage map. The relevant pest service depends on the species, the property and how the space is used rather than the suburb name alone.",
-    "focus": "For flying insects or a suspected nest, keep your distance and explain where you see activity. For crawling insects, a clear account of trails and repeat sightings helps guide an assessment.",
-    "faq": "Can I ask about a suspected wasp nest in Howick?", "answer": "Yes. Keep clear of the suspected nest and tell Davis where you see the flight path or activity. Do not disturb it to take a close-up photo.", "related": ["glenfield", "papatoetoe"]
+    "slug": "howick", "name": "Howick", "region": "East Auckland", "status": "published", "evidence": "Client-approved service-area revision.",
+    "directoryContext": "Serving Howick and surrounding East Auckland suburbs.",
+    "subheading": "Residential and Commercial Pest Control in East Auckland",
+    "intro": "Davis Pest Solutions provides professional pest control for homes, rental properties and local businesses throughout Howick.",
+    "local": "From established homes and garden properties to cafés and commercial premises, we offer targeted treatments and practical pest management solutions.",
+    "services": "Treatments for ants, cockroaches, spiders, rodents, flies, fleas and wasps. Scheduled commercial pest management programmes are also available.",
+    "nearby": ["Cockle Bay", "Mellons Bay", "Highland Park", "Botany Downs", "Somerville", "Bucklands Beach"],
+    "cta": "Professional pest control suited to your property."
   },
   {
-    "slug": "papatoetoe", "name": "Papatoetoe", "region": "South Auckland", "status": "published", "evidence": "Shown inside the client-supplied Auckland service-area map.", "directoryContext": "Pest-control support for Papatoetoe homes and South Auckland workplaces.",
-    "intro": "Davis Pest Solutions accepts pest-control enquiries from Papatoetoe. Whether the concern is at a home or business, an assessment of the actual site guides the recommendation.",
-    "local": "Papatoetoe is marked within the southern portion of the Davis service-area map. Access to affected rooms, nearby food or moisture sources and any occupants or pets are useful details to share before a visit.",
-    "focus": "If you have noticed droppings, gnaw marks or insects returning after cleaning, describe the location and timeline. That information can help Davis decide what to inspect first.",
-    "faq": "What if I am unsure which pest is present?", "answer": "Choose the general pest-control option in the quote request and describe the signs. Davis can discuss identification and the appropriate next step.", "related": ["henderson", "howick"]
+    "slug": "manukau", "name": "Manukau", "region": "South Auckland", "status": "published", "evidence": "Client-approved service-area revision.",
+    "directoryContext": "Serving Manukau, Papatoetoe, Manurewa, Papakura and surrounding South Auckland suburbs.",
+    "subheading": "Residential and Commercial Pest Control in South Auckland",
+    "intro": "Davis Pest Solutions provides professional pest control for homes, rental properties, restaurants, retail premises and businesses throughout Manukau.",
+    "local": "From household pest problems to commercial pest management, we offer targeted treatments, regular monitoring and practical recommendations.",
+    "services": "Treatments for ants, cockroaches, spiders, rodents, flies, fleas and wasps. Scheduled pest management programmes and service documentation are also available for businesses.",
+    "nearby": ["Papatoetoe", "Ōtara", "Wiri", "Manurewa", "Mangere", "Goodwood Heights", "Totara Heights", "Takanini", "Karaka", "Papakura", "Drury"],
+    "cta": "Reliable pest control for South Auckland homes and businesses."
   }
 ]

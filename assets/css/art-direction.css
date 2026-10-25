@@ -222,6 +222,13 @@ a.location-card:hover, a.location-card:focus-visible {background: #183a2b; borde
 .location-card--help .location-card-region, .location-card--help .location-card-name {color: var(--forest);}
 .location-card--help .location-card-context {margin: 0; padding-top: 13px; color: #42594b;}
 .location-card--help .text-link {display: inline-flex; align-items: center; min-height: 44px; margin-top: auto; color: #9d3909;}
+.location-hero .location-subheading {margin: 0 0 16px; color: #bce1c6; font-size: clamp(1rem, 1.3vw, 1.18rem); font-weight: 750; line-height: 1.45;}
+.location-nearby .premium-columns {align-items: start;}
+.nearby-suburbs {display: flex; flex-wrap: wrap; gap: 9px; padding: 0; margin: 0 0 24px; list-style: none;}
+.nearby-suburbs li {padding: 8px 13px; border: 1px solid #b9c9bd; color: var(--forest); background: #f5f7f2; font-weight: 650; line-height: 1.4;}
+@media (max-width: 700px) {
+  body[data-page="areas"] main > .section:last-of-type .cta > a.btn--orange {display: inline-flex; margin-top: 20px;}
+}
 body[data-page="areas"] .area-hero-photo {max-width: 480px; border-radius: 0; box-shadow: none;}
 body[data-page="areas"] .area-coverage {background: var(--pale);}
 #coverage-map, #suburb-directory {scroll-margin-top: 104px;}

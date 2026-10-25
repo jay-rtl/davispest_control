@@ -1,5 +1,6 @@
 Options -Indexes
 DirectoryIndex index.html index.php
+Redirect 301 /pest-control/papatoetoe/ /pest-control/manukau/
 ErrorDocument 404 /404.html
 RedirectMatch 404 ^/(backup|tmp|source-assets|content|scripts|\.build)(/|$)
 RedirectMatch 404 ^/(preview-router\.php|reviews/lib\.php|package\.json)$
