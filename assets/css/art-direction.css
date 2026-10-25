@@ -181,6 +181,12 @@ body[data-page="home"] .step p {grid-column: 3; font-size: .93rem;}
 .google-review blockquote {font-family:Inter,Arial,sans-serif;font-size:.96rem;font-weight:450;line-height:1.65;letter-spacing:0;margin:0;overflow-wrap:anywhere;color:#26372d;}
 .google-review blockquote p {margin:0;}
 .google-review blockquote p + p {margin-top:1.05em;}
+.google-review__preview {font-family:Inter,Arial,sans-serif;font-size:.96rem;line-height:1.65;margin:0;color:#26372d;}
+.google-review__toggle {align-self:flex-start;min-height:44px;margin-top:auto;padding:14px 0 0;border:0;border-bottom:2px solid var(--accent);background:none;color:var(--forest);font:800 .86rem Inter,Arial,sans-serif;cursor:pointer;}
+.google-review__toggle:hover {color:var(--accent);}
+.google-review__toggle span {display:inline-block;margin-left:8px;transition:transform .2s ease;}
+.google-review__toggle[aria-expanded="true"] span {transform:rotate(90deg);}
+.google-review__toggle:focus-visible {outline:3px solid #ef8549;outline-offset:4px;}
 .google-reviews-all {display:inline-flex;gap:20px;align-items:center;margin-top:30px;font-weight:800;color:var(--forest);border-bottom:2px solid var(--orange);padding-bottom:6px;}
 .google-reviews-all:hover {color:var(--orange);}
 @media(max-width:800px) {.google-reviews-grid {grid-template-columns:1fr;}}

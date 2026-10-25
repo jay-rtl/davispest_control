@@ -21,6 +21,36 @@
     invalidateOnRefresh: true
   });
 
+  // The intro is a separate route. Let the homepage arrive in layers when it
+  // loads, then hand over to scroll-linked movement without hiding HTML in CSS.
+  if (document.body.dataset.page === 'home') {
+    const hero = document.querySelector('.hero');
+    const heroCopy = [...hero.querySelectorAll('.hero-copy > .eyebrow, .hero-copy > h1, .hero-copy > .lead, .hero-actions, .trust-row')];
+    const entrance = gsap.timeline({defaults: {ease: 'power3.out'}, onComplete: () => ScrollTrigger.refresh()});
+    entrance.fromTo(hero.querySelector('.client-photo'),
+      {clipPath: 'inset(0 0 0 22%)'},
+      {clipPath: 'inset(0 0 0 0%)', duration: 1.25, ease: 'power3.inOut'}, 0
+    ).fromTo(heroCopy,
+      {y: mobile ? 19 : 31, clipPath: 'inset(0 0 16% 0)', opacity: .55},
+      {y: 0, clipPath: 'inset(0 0 0% 0)', opacity: 1, duration: .85, stagger: .11}, .12
+    ).fromTo(hero.querySelector('.brand-note'),
+      {y: 18, opacity: .45},
+      {y: 0, opacity: 1, duration: .7}, .65
+    );
+    add(entrance);
+
+    const strip = document.querySelector('.brand-strip-inner');
+    if (strip) {
+      const stripTimeline = gsap.timeline({scrollTrigger: trigger(strip, 'top 96%', 'bottom 70%')});
+      [...strip.children].forEach((item, index) => stripTimeline.fromTo(item,
+        {y: mobile ? 12 : 22, clipPath: 'inset(0 0 24% 0)', opacity: .65},
+        {y: 0, clipPath: 'inset(0 0 0% 0)', opacity: 1, duration: 1, ease: 'none'},
+        index * .36
+      ));
+      add(stripTimeline);
+    }
+  }
+
   // Keep the first screen readable. A reversible image movement connects it
   // to the next section without moving the page layout.
   select('.hero .client-photo img, .page-hero figure img, .premium-page-hero figure img')
@@ -66,6 +96,14 @@
         scrollTrigger: trigger(item, index % 2 ? 'top 88%' : 'top 92%', 'top 47%')}
     )));
 
+  // Review cards were outside the generic grids, so they previously had no
+  // ScrollTrigger at all. Keep each reveal tied to its own scroll distance.
+  select('.google-review').forEach((card, index) => add(gsap.fromTo(card,
+    {y: mobile ? 23 : 42, scale: .985, clipPath: 'inset(0 0 12% 0)', opacity: .78},
+    {y: 0, scale: 1, clipPath: 'inset(0 0 0% 0)', opacity: 1, ease: 'none',
+      scrollTrigger: trigger(card, index % 2 ? 'top 89%' : 'top 94%', 'top 48%')}
+  )));
+
   // Maps and authentic work photos open from a restrained crop.
   unique(select('.services-feature img, .client-meet-photo img, .why-photo img, .home-map img, .service-map-image img, .premium-photo img, .area-coverage figure img')
     .filter(image => !image.closest('.hero,.page-hero,.premium-page-hero')))
@@ -76,6 +114,7 @@
     )));
 
   const refresh = () => ScrollTrigger.refresh();
+  select('.google-review__toggle').forEach(button => button.addEventListener('click', () => requestAnimationFrame(refresh)));
   addEventListener('load', refresh, {once: true});
   addEventListener('pagehide', () => {
     removeEventListener('load', refresh);

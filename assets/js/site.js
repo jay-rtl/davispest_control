@@ -36,6 +36,24 @@
     const item = button.closest('.faq');
     button.setAttribute('aria-expanded', String(item.classList.toggle('open')));
   }));
+  document.querySelectorAll('.google-review').forEach(card => {
+    const preview = card.querySelector('.google-review__preview');
+    const full = card.querySelector('blockquote');
+    const toggle = card.querySelector('.google-review__toggle');
+    if (!preview || !full || !toggle) return;
+    preview.hidden = false;
+    full.hidden = true;
+    toggle.hidden = false;
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.firstChild.textContent = 'See more ';
+    toggle.addEventListener('click', () => {
+      const expanded = toggle.getAttribute('aria-expanded') !== 'true';
+      preview.hidden = expanded;
+      full.hidden = !expanded;
+      toggle.setAttribute('aria-expanded', String(expanded));
+      toggle.firstChild.textContent = expanded ? 'See less ' : 'See more ';
+    });
+  });
   // Scroll animation is optional; content remains visible without it.
   document.querySelectorAll('.reveal,.reveal-up,.reveal-left,.reveal-right,.fade-in,[data-animate]')
     .forEach(element => element.classList.add('visible'));
