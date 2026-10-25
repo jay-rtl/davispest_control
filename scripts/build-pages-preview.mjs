@@ -32,9 +32,6 @@ const copy = (relative, destination = relative) => {
     if (destination.endsWith('.html')) {
       content = content.replace(/(<meta\s+(?:property="og:(?:url|image)"|name="twitter:image")\s+content=")https:\/\/davispestsol\.co\.nz(\/[^\"]*)(")/gi, `$1${previewOrigin}$2$3`);
     }
-    if (destination.replaceAll('\\', '/') === 'index.html') {
-      content = content.replace(/<script src="[^\"]*\/assets\/js\/home-reviews\.js" defer><\/script>/, '');
-    }
     if (destination.endsWith('.html')) {
       content = content.replace(/<meta name="robots"[^>]*>/i, '')
         .replace('</head>', '<meta name="robots" content="noindex, nofollow"></head>');
