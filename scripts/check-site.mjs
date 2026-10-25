@@ -41,7 +41,7 @@ for (const route of pages) {
   }
 }
 const sitemap=fs.readFileSync(path.join(root,'sitemap.xml'),'utf8');
-for (const route of [...pages,'/reviews/']) if (!sitemap.includes(`https://davispestsol.co.nz${route}</loc>`)) errors.push(`Missing sitemap URL: ${route}`);
+for (const route of pages) if (!sitemap.includes(`https://davispestsol.co.nz${route}</loc>`)) errors.push(`Missing sitemap URL: ${route}`);
 for (const location of JSON.parse(fs.readFileSync(path.join(root,'content/locations.json'),'utf8')).filter(item=>item.status!=='published')) {
   if (sitemap.includes(`/pest-control/${location.slug}/`)) errors.push(`Unpublished location in sitemap: ${location.slug}`);
 }

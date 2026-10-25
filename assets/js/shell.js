@@ -4,7 +4,7 @@
   const items = [
     ['home', '/', 'Home'], ['about', '/about/', 'About'],
     ['services', '/services/', 'Services'], ['areas', '/service-areas/', 'Areas we serve'],
-    ['reviews', '/reviews/', 'Reviews'], ['faqs', '/faqs/', 'FAQs'], ['contact', '/contact/', 'Contact']
+    ['reviews', '/#customer-voices', 'Reviews'], ['faqs', '/faqs/', 'FAQs'], ['contact', '/contact/', 'Contact']
   ];
   const links = items.map(([id, url, label]) => `<a href="${url}"${page === id ? ' aria-current="page"' : ''}>${label}</a>`).join('');
   const header = document.querySelector('[data-header]');

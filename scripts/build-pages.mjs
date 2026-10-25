@@ -63,6 +63,6 @@ for (const location of publicLocations) {
   fs.mkdirSync(path.dirname(output), {recursive:true});
   fs.writeFileSync(output, shell(title, description, route, 'areas', body, breadcrumb(location.name, 'Areas we serve', '/service-areas/', route)));
 }
-const sitemapPaths = ['/', '/about/', '/residential-pest-control/', '/commercial-pest-control/', '/services/', '/service-areas/', '/reviews/', '/faqs/', '/contact/', ...services.map(item=>`/services/${item.slug}/`), ...publicLocations.map(item=>`/pest-control/${item.slug}/`)];
+const sitemapPaths = ['/', '/about/', '/residential-pest-control/', '/commercial-pest-control/', '/services/', '/service-areas/', '/faqs/', '/contact/', ...services.map(item=>`/services/${item.slug}/`), ...publicLocations.map(item=>`/pest-control/${item.slug}/`)];
 fs.writeFileSync(path.join(root, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapPaths.map(route=>`  <url><loc>${site}${route}</loc></url>`).join('\n')}\n</urlset>\n`);
 console.log(`Built ${services.length} service pages and ${publicLocations.length} verified location pages.`);
