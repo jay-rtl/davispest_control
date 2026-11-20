@@ -3,7 +3,6 @@
   const leave = () => {
     if (leaving) return;
     leaving = true;
-    try { sessionStorage.setItem('davis-intro-seen', '1'); } catch {}
     location.replace('/');
   };
   document.addEventListener('keydown', event => {

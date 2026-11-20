@@ -63,5 +63,20 @@ for (const location of locations) {
 if (!areasHtml.includes('Pest Control Across Auckland.') || !areasHtml.includes("Don't see your suburb?")) errors.push('Missing revised area directory headings');
 const oldPage=fs.readFileSync(path.join(root,'pest-control/papatoetoe/index.html'),'utf8');
 if (!oldPage.includes('noindex') || !oldPage.includes('/pest-control/manukau/')) errors.push('Papatoetoe legacy route does not point to Manukau');
+const home=fs.readFileSync(path.join(root,'index.html'),'utf8');
+for (const key of ['the-home','inspect','the-process','treatment','property-services','meet-ej','customer-voices','next-step']) {
+  if (!home.includes(`id="${key}"`) || !home.includes(`href="#${key}"`)) errors.push(`Missing story chapter or navigation: ${key}`);
+}
+for (const service of services) {
+  if (!home.includes(`href="/services/${service.slug}/"`) && !fs.readFileSync(path.join(root,'services/index.html'),'utf8').includes(`href="/services/${service.slug}/"`)) errors.push(`Service missing from both directories: ${service.slug}`);
+}
+const contentText=home.replaceAll('&#39;',"'").replaceAll('&quot;','"').replaceAll('&amp;','&');
+const reviews=JSON.parse(fs.readFileSync(path.join(root,'content/featured-google-reviews.json'),'utf8'));
+for (const review of reviews.reviews) {
+  if (![review.author,...review.paragraphs].every(text=>contentText.includes(text))) errors.push(`Incomplete Google review: ${review.author}`);
+}
+const contact=fs.readFileSync(path.join(root,'contact/index.html'),'utf8');
+const bookingUrl='https://book.servicem8.com/request_booking?uuid=401e1e64-ea0e-4858-8261-2403bd7af3bb';
+if (!contact.includes(`src="${bookingUrl}"`) || !contact.includes(`href="${bookingUrl}"`)) errors.push('ServiceM8 embed and direct booking destination must match the approved URL');
 if (errors.length) { console.error(errors.join('\n')); process.exit(1); }
 console.log(`Checked ${pages.length} static pages: metadata, headings, structured data, local links, sitemap entries and linked suburb context.`);

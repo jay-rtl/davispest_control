@@ -1,1 +1,10 @@
-(()=>{const panel=document.querySelector('.servicem8-panel'),frame=document.querySelector('.servicem8-frame'),loading=document.querySelector('.servicem8-loading');if(!panel||!frame||!loading)return;let finished=false;const loaded=()=>{finished=true;panel.classList.add('is-loaded');panel.classList.remove('is-timeout')};frame.addEventListener('load',loaded,{once:true});setTimeout(()=>{if(!finished){panel.classList.add('is-timeout');loading.querySelector('span:last-child').textContent='The secure form is taking longer than expected. Use the button below to continue.'}},10000)})();
+(() => {
+  const frame=document.querySelector('.servicem8-frame');
+  const status=document.querySelector('.servicem8-loading');
+  if (!frame || !status) return;
+  // The vendor frame is cross-origin. Keep its separate full-page link visible
+  // at all times, including when browser privacy settings prevent the embed.
+  const timer=setTimeout(()=>{status.hidden=true;},8000);
+  frame.addEventListener('load',()=>{clearTimeout(timer);status.hidden=true;},{once:true});
+  if (document.readyState!=='complete') status.hidden=false;
+})();

@@ -3,6 +3,8 @@ html {background:#fff}
 body {min-height:100svh;margin:0;background:#fff;color:#07372a;font-family:Arial,sans-serif}
 .intro-stage {min-height:100svh;display:grid;place-items:center;padding:48px 24px}
 .intro-content {width:min(560px,100%);text-align:center}
+.intro-home {position:absolute;top:20px;right:24px;display:inline-flex;align-items:center;min-height:44px;color:#07372a;text-underline-offset:4px}
+.intro-home:focus-visible {outline:3px solid #b64a19;outline-offset:3px}
 .intro-logo {display:block;width:min(350px,72vw);height:auto;margin:0 auto}
 .intro-kicker {margin:20px 0 5px;color:#9c3509;font-size:.75rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
 .intro-tagline {margin:0;font-size:1.1rem;font-weight:700;letter-spacing:.01em}

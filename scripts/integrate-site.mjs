@@ -1,45 +1,51 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import renderShell from '../assets/js/shell.js';
+import {renderHome} from './property-story.mjs';
+import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const assetVersion = file => createHash('sha256').update(fs.readFileSync(path.join(root, file))).digest('hex').slice(0, 12);
+const versions = {
+  shell: assetVersion('assets/js/shell.js'),
+  site: assetVersion('assets/js/site.js'),
+  motion: assetVersion('assets/js/motion.js'),
+  art: assetVersion('assets/css/art-direction.css')
+};
 const services = JSON.parse(fs.readFileSync(path.join(root,'content/services.json'),'utf8'));
 const locations = JSON.parse(fs.readFileSync(path.join(root,'content/locations.json'),'utf8')).filter(item=>item.status==='published');
 const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const featuredReviews = JSON.parse(fs.readFileSync(path.join(root,'content/featured-google-reviews.json'),'utf8'));
 if (featuredReviews.reviews.length !== 6 || featuredReviews.reviews.some(item => !Number.isInteger(item.rating) || item.rating < 1 || item.rating > 5 || !item.author?.trim() || !Array.isArray(item.paragraphs) || !item.paragraphs.length || item.paragraphs.some(paragraph => !paragraph.trim()))) throw Error('Featured Google reviews need six attributed full comments');
-const reviewCards = featuredReviews.reviews.map((item, index) => {
-  const fullText = item.paragraphs.join(' ');
-  const previewText = fullText.replace(/^⭐+\s*/, '');
-  const preview = previewText.length > 155 ? `${previewText.slice(0, 155).replace(/\s+\S*$/, '')}…` : previewText;
-  return `<article class="google-review"><div class="google-review__person"><span class="google-review__avatar" aria-hidden="true">${escapeHtml(item.author.trim().charAt(0).toUpperCase())}</span><div><h3>${escapeHtml(item.author)}</h3><span>Google review</span></div></div><p class="google-review__stars" aria-label="${item.rating} out of 5 stars"><span aria-hidden="true">${'\u2605'.repeat(item.rating)}${'\u2606'.repeat(5-item.rating)}</span></p><p class="google-review__preview" hidden>${escapeHtml(preview)}</p><blockquote id="google-review-text-${index + 1}">${item.paragraphs.map(paragraph => `<p>${escapeHtml(paragraph)}</p>`).join('')}</blockquote><button class="google-review__toggle" type="button" aria-controls="google-review-text-${index + 1}" aria-expanded="true" hidden>See less <span aria-hidden="true">↗</span></button></article>`;
-}).join('');
-const reviewSection = `<section class="section premium-band" id="customer-voices"><div class="container"><div class="google-reviews-head"><div><span class="eyebrow">Google reviews</span><h2>What Auckland customers are saying.</h2><p class="section-intro">Six customer reviews from Google. Open a card to read the full review.</p></div></div><div class="google-reviews-grid" id="home-reviews">${reviewCards}</div><a class="google-reviews-all" href="${escapeHtml(featuredReviews.sourceUrl)}" target="_blank" rel="noopener noreferrer">Read all reviews on Google <span aria-hidden="true">↗</span></a></div></section>`;
 const original = ['index.html','about/index.html','residential-pest-control/index.html','commercial-pest-control/index.html','services/index.html','service-areas/index.html','faqs/index.html','contact/index.html'];
 const generated = [...services.map(item=>`services/${item.slug}/index.html`),...locations.map(item=>`pest-control/${item.slug}/index.html`)];
-const fallbackNav = `<header data-header><nav class="noscript-nav" aria-label="Main navigation"><a href="/">Davis Pest Solutions</a><a href="/services/">Services</a><a href="/service-areas/">Areas we serve</a><a href="/about/">About</a><a href="/contact/#request-service">Request a quote</a></nav></header>`;
-const fallbackFooter = `<div data-footer><footer class="fallback-footer"><a href="/contact/#request-service">Request a quote</a> · <a href="tel:0204732847">02047-DAVIS</a> · <a href="mailto:ej@davispestsol.co.nz">Email Davis</a></footer></div>`;
+const fallbackNav = `<nav class="noscript-nav" aria-label="Main navigation"><a href="/">Davis Pest Solutions</a><a href="/services/">Services</a><a href="/service-areas/">Areas we serve</a><a href="/about/">About</a><a href="/faqs/">FAQs</a><a href="/contact/#request-service">Request a quote</a></nav>`;
 for (const name of [...original,...generated]) {
   const file = path.join(root,name);
   let html = fs.readFileSync(file,'utf8');
   html = html.replace(/\s*<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com"\s*\/>/g,'').replace(/\s*<link rel="preconnect" href="https:\/\/fonts\.gstatic\.com" crossorigin\s*\/>/g,'').replace(/\s*<link\s+href="https:\/\/fonts\.googleapis\.com\/css2\?[^>]+\/>/g,'');
-  html = html.replace(/<header data-header>\s*(?:<nav class="noscript-nav"[\s\S]*?<\/nav>)?\s*<\/header>/,fallbackNav);
-  html = html.replace(/<div data-footer>\s*(?:<footer class="fallback-footer"[\s\S]*?<\/footer>)?\s*<\/div>/,fallbackFooter);
-  if (!html.includes('/assets/css/premium.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/premium.css"></head>');
-  if (!html.includes('/assets/css/art-direction.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/art-direction.css"></head>');
+  const page = html.match(/<body data-page="([^"]+)"/)?.[1] || 'home';
+  const {header,footer} = renderShell(page,'/'+name.replace(/index\.html$/,''));
+  html = html.replace(/<header data-header>[\s\S]*?<\/header>/,()=>`<header data-header>${header}<noscript>${fallbackNav}</noscript></header>`);
+  const footerPattern = html.includes('<!--footer-end-->') ? /<div data-footer>[\s\S]*?<!--footer-end-->/ : /<div data-footer>\s*(?:<footer class="fallback-footer">[\s\S]*?<\/footer>)?\s*<\/div>/;
+  html = html.replace(footerPattern,()=>`<div data-footer>${footer}</div><!--footer-end-->`);
+  html = html.replace(/<script src="\/assets\/js\/shell\.js[^"]*"[^>]*>\s*<\/script>/g,'');
+  if (name !== 'index.html' && !html.includes('/assets/css/premium.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/premium.css"></head>');
+  if (name !== 'index.html' && !html.includes('/assets/css/art-direction.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/art-direction.css"></head>');
   if (!html.includes('rel="preload" as="font"')) html = html.replace('</head>','<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Inter-latin.woff2" crossorigin></head>');
-  if (!html.includes('/assets/js/motion.js')) html = html.replace('</body>','<script src="/assets/vendor/gsap.min.js" defer></script><script src="/assets/vendor/ScrollTrigger.min.js" defer></script><script src="/assets/js/motion.js" defer></script></body>');
+  html = html.replace(/<script src="\/assets\/vendor\/(?:gsap|ScrollTrigger)\.min\.js" defer><\/script>/g,'');
+  if (name !== 'index.html') html = html.replace(/<script src="\/assets\/js\/motion\.js[^"]*" defer><\/script>/g,'');
+  else if (!html.includes('/assets/js/motion.js')) html = html.replace('</body>','<script src="/assets/js/motion.js" defer></script></body>');
+  html = html.replace(/\/assets\/js\/shell\.js(?:\?v=[^"']+)?/g, `/assets/js/shell.js?v=${versions.shell}`)
+    .replace(/\/assets\/js\/site\.js(?:\?v=[^"']+)?/g, `/assets/js/site.js?v=${versions.site}`)
+    .replace(/\/assets\/js\/motion\.js(?:\?v=[^"']+)?/g, `/assets/js/motion.js?v=${versions.motion}`)
+    .replace(/\/assets\/css\/art-direction\.css(?:\?v=[^"']+)?/g, `/assets/css/art-direction.css?v=${versions.art}`);
+  if (!html.includes('/assets/css/property.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/property.css"></head>');
+  if (!html.includes('/assets/js/property.js')) html = html.replace('</body>','<script src="/assets/js/property.js" defer></script></body>');
   fs.writeFileSync(file,html);
 }
-const serviceLinks = {cockroaches:'cockroach-control',rodents:'rodent-control',ants:'ant-control',flies:'fly-control',wasps:'wasp-control',fleas:'flea-treatment',spiders:'spider-control'};
 const homePath = path.join(root,'index.html');
-let home = fs.readFileSync(homePath,'utf8');
-home = home.replaceAll('/pest-control/papatoetoe/', '/pest-control/manukau/').replace('Papatoetoe ↗', 'Manukau ↗');
-for (const [anchor,slug] of Object.entries(serviceLinks)) home = home.replaceAll(`/services/#${anchor}`,`/services/${slug}/`);
-const homeFeature = `<section class="section" id="explore-auckland"><div class="container"><div class="editorial-index"><span class="eyebrow">Areas we serve</span><h2>Auckland, up close.</h2><p>Davis works across the Auckland coverage area shown on the client-supplied map. Send your address to confirm availability.</p><div class="location-links">${locations.map(item=>`<a href="/pest-control/${item.slug}/">${item.name} ↗</a>`).join('')}</div><p><a class="text-link" href="/service-areas/">Explore all service areas ↗</a></p></div><figure class="home-map"><img src="/assets/images/auckland-service-area-map-client-2026-08.jpg" width="3644" height="3453" alt="Davis Pest Solutions Auckland service area map" loading="lazy" decoding="async"><figcaption>Client-provided Auckland coverage map</figcaption></figure></div></section>
-${reviewSection}`;
-if (!home.includes('id="customer-voices"')) home = home.replace('      <section class="section">\n        <div class="container cta">',homeFeature+'\n      <section class="section">\n        <div class="container cta">');
-home = home.replace(/<section class="section premium-band" id="customer-voices">[\s\S]*?<\/section>/,reviewSection);
-home = home.replace(/<script src="\/assets\/js\/home-reviews\.js" defer><\/script>/,'');
+const home = fs.readFileSync(homePath,'utf8').replace(/<main\b[\s\S]*?<\/main>/, () => renderHome(services, locations, featuredReviews));
 fs.writeFileSync(homePath,home);
 const servicesPath = path.join(root,'services/index.html');
 let servicesHtml = fs.readFileSync(servicesPath,'utf8');
@@ -51,8 +57,27 @@ const areasPath = path.join(root,'service-areas/index.html');
 let areas = fs.readFileSync(areasPath,'utf8');
 for (const item of locations) if (!item.directoryContext) throw Error(`Missing directory context for ${item.slug}`);
 const directory = `<section class="section location-directory" id="suburb-directory"><div class="container"><div class="directory-heading"><div><span class="eyebrow">Local pages</span><h2>Find a starting point.</h2></div><p>Explore a published suburb page below, or tell Davis your address to confirm service availability.</p></div><div class="location-cards">${locations.map(item=>`<a class="location-card" href="/pest-control/${item.slug}/"><span class="location-card-region">${escapeHtml(item.region)}</span><h3 class="location-card-name">${escapeHtml(item.name)} <span aria-hidden="true">↗</span></h3><span class="location-card-context">${escapeHtml(item.directoryContext)}</span></a>`).join('')}<div class="location-card location-card--help"><span class="location-card-region">Address check</span><h3 class="location-card-name">Beyond these suburbs?</h3><p class="location-card-context">The map covers more of Auckland than the published page list. Send Davis your address to confirm availability.</p><a class="text-link" href="/contact/#request-service">Ask about your address ↗</a></div></div></div></section>`;
-const revisedDirectory = directory.replace('Find a starting point.', 'Pest Control Across Auckland.').replace('Beyond these suburbs?', "Don't see your suburb?");
+const finder = `<div class="area-finder" hidden><label for="area-search">Find your suburb or region</label><input type="search" id="area-search" placeholder="e.g. Papatoetoe" autocomplete="off"><output aria-live="polite"></output></div>`;
+const revisedDirectory = directory.replace('<div class="location-cards">',finder+'<div class="location-cards">').replace('Find a starting point.', 'Pest Control Across Auckland.').replace('Beyond these suburbs?', "Don't see your suburb?");
 if (areas.includes('id="suburb-directory"')) areas = areas.replace(/<section class="section location-directory" id="suburb-directory">[\s\S]*?<\/section>/,revisedDirectory);
 else areas = areas.replace('</main>',revisedDirectory+'\n    </main>');
+for (const item of locations) {
+  const heading = '<span class="location-card-region">'+escapeHtml(item.region)+'</span>';
+  areas = areas.replace(heading, '<span class="location-card-region" data-nearby="'+escapeHtml(item.nearby.join(', '))+'">'+escapeHtml(item.region)+'</span>');
+}
 fs.writeFileSync(areasPath,areas);
+// Each deployed page must request the CSS/JS built with it. Hostinger and browsers
+// can otherwise keep older files for a month while the HTML has already changed.
+for (const name of [...original, ...generated, 'intro/index.html', '404.html']) {
+  const file = path.join(root, name);
+  if (!fs.existsSync(file)) continue;
+  const html = fs.readFileSync(file, 'utf8').replace(
+    /(?<=["'\s])\/assets\/(?:css|js|images(?:\/[a-zA-Z0-9_.-]+)*)\/[a-zA-Z0-9_.-]+\.(?:css|mjs|js|png|jpe?g|webp|svg|avif|gif)(?:\?v=[a-f0-9]+)?/g,
+    asset => {
+      const relative = asset.split('?')[0].slice(1);
+      return `${asset.split('?')[0]}?v=${assetVersion(relative)}`;
+    }
+  );
+  fs.writeFileSync(file, html);
+}
 console.log(`Integrated design and navigation into ${original.length+generated.length} pages.`);
