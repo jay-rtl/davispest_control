@@ -22,6 +22,9 @@ for (const route of pages) {
   titles.set(title,route);
   if (canonical !== `https://davispestsol.co.nz${route}`) errors.push(`Canonical mismatch: ${route}`);
   if (h1 !== 1) errors.push(`Expected one H1 on ${route}; got ${h1}`);
+  if (!html.includes('class="site-header-inner"') || !html.includes('/assets/css/davis-cinema.css')) errors.push(`Missing shared public design: ${route}`);
+  const header = html.match(/<header data-header>[\s\S]*?<\/header>/)?.[0] || '';
+  if (!header.includes('class="site-menu"') || /<img\b/.test(header) || !html.includes('class="footer-brandmark"')) errors.push(`Expected the overlay menu and footer logo: ${route}`);
   const metas=[...html.matchAll(/<meta\s+[^>]*>/gi)].map(match=>match[0]);
   const meta=(key,attribute='property')=>metas.filter(tag=>tag.includes(`${attribute}="${key}"`));
   if (meta('og:image').length!==1 || !meta('og:image')[0].includes(`content="${socialImage}"`)) errors.push(`Social image missing or duplicated: ${route}`);
@@ -60,21 +63,26 @@ for (const location of locations) {
   const nearbyBlock=html.match(/<ul class="nearby-suburbs">([\s\S]*?)<\/ul>/)?.[1];
   if (!nearbyBlock || nearbyBlock.includes('<a ')) errors.push(`Nearby suburbs must be plain text: ${location.slug}`);
 }
-if (!areasHtml.includes('Pest Control Across Auckland.') || !areasHtml.includes("Don't see your suburb?")) errors.push('Missing revised area directory headings');
+if (!areasHtml.includes('Pest Control <em>Across Auckland.</em>') || !areasHtml.includes("Don't see your suburb?")) errors.push('Missing revised area directory headings');
 const oldPage=fs.readFileSync(path.join(root,'pest-control/papatoetoe/index.html'),'utf8');
 if (!oldPage.includes('noindex') || !oldPage.includes('/pest-control/manukau/')) errors.push('Papatoetoe legacy route does not point to Manukau');
 const home=fs.readFileSync(path.join(root,'index.html'),'utf8');
-for (const key of ['the-home','inspect','the-process','treatment','property-services','meet-ej','customer-voices','next-step']) {
-  if (!home.includes(`id="${key}"`) || !home.includes(`href="#${key}"`)) errors.push(`Missing story chapter or navigation: ${key}`);
+for (const key of ['the-home','inspect','the-process','meet-ej','next-step']) {
+  if (!home.includes(`id="${key}" data-film-scene`)) errors.push(`Missing film scene: ${key}`);
 }
+if ((home.match(/data-film-scene/g)||[]).length !== 5) errors.push('Homepage should have five film scenes');
+if ((home.match(/class="film-quote" href="\/contact\/#request-service"/g)||[]).length !== 2) errors.push('Expected a quote link in the opening and closing scenes');
+if ((home.match(/data-pest-choice="/g)||[]).length !== 3) errors.push('Expected three homepage pest choices');
 for (const service of services) {
   if (!home.includes(`href="/services/${service.slug}/"`) && !fs.readFileSync(path.join(root,'services/index.html'),'utf8').includes(`href="/services/${service.slug}/"`)) errors.push(`Service missing from both directories: ${service.slug}`);
 }
-const contentText=home.replaceAll('&#39;',"'").replaceAll('&quot;','"').replaceAll('&amp;','&');
+const reviewPage=fs.readFileSync(path.join(root,'about/index.html'),'utf8');
+const contentText=reviewPage.replaceAll('&#39;',"'").replaceAll('&quot;','"').replaceAll('&amp;','&');
 const reviews=JSON.parse(fs.readFileSync(path.join(root,'content/featured-google-reviews.json'),'utf8'));
 for (const review of reviews.reviews) {
   if (![review.author,...review.paragraphs].every(text=>contentText.includes(text))) errors.push(`Incomplete Google review: ${review.author}`);
 }
+if (!home.includes('href="/about/#customer-reviews"') || !home.includes('id="customer-voices"')) errors.push('Missing homepage review entry point');
 const contact=fs.readFileSync(path.join(root,'contact/index.html'),'utf8');
 const bookingUrl='https://book.servicem8.com/request_booking?uuid=401e1e64-ea0e-4858-8261-2403bd7af3bb';
 if (!contact.includes(`src="${bookingUrl}"`) || !contact.includes(`href="${bookingUrl}"`)) errors.push('ServiceM8 embed and direct booking destination must match the approved URL');

@@ -1,0 +1,285 @@
+/* Interior pages use the type, paper and forest palette of the home film. */
+:root {--interior-rule:#213a2b42;--interior-space:clamp(42px,7vw,105px);}
+:is(.field-heading h1,.property-features h2,.coverage-heading h2,.about-origins h2,.about-care h2,.faq-help h2,.inquiry-page h1,.inquiry-page h2) {
+  margin:0;font:var(--display-weight) clamp(2.85rem,5.95vw,6.6rem)/var(--display-leading) var(--display-serif);
+  letter-spacing:var(--display-tracking);text-wrap:balance;
+}
+:is(.field-heading,.property-features,.coverage-heading,.about-origins,.faq-help,.inquiry-page) :is(h1,h2) em {
+  font-style:italic;color:#795039;
+}
+:is(.field-gallery,.inquiry-intro) {background:var(--davis-forest);color:var(--davis-white);}
+:is(.field-heading,.inquiry-intro) .book-crumb {color:#ede7da;margin:0 0 18px;}
+:is(.field-heading,.inquiry-intro) .book-crumb a,
+:is(.field-heading,.inquiry-intro) :is(h1,h2) em {color:var(--davis-amber);}
+:is(.field-gallery,.inquiry-intro) :is(a,button,summary):focus-visible {
+  outline:3px solid var(--davis-amber);outline-offset:3px;
+}
+:is(.coverage-explorer,.property-features,.faq-spread,.inquiry-page) :is(a,button,summary,input):focus-visible {
+  outline:3px solid #934b21;outline-offset:3px;
+}
+.inquiry-page .inquiry-intro a:focus-visible {outline-color:var(--davis-amber);}
+
+/* Services field guide */
+.field-gallery {padding:clamp(95px,9vw,144px) 0 var(--interior-space);}
+.field-heading {
+  display:grid;grid-template-columns:minmax(0,1.4fr) minmax(220px,.6fr);
+  align-items:end;gap:15px clamp(25px,6vw,95px);margin-bottom:clamp(25px,4vw,55px);
+}
+.field-heading h1 {max-width:16ch;}
+.field-heading>p {margin:0;color:#eee9dc;max-width:38ch;}
+.field-options {
+  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;
+  padding-bottom:9px;margin-bottom:10px;border-bottom:1px solid #fff8ea45;
+}
+.field-options button {
+  min-height:44px;padding:7px 3px;border:0;border-radius:3px;
+  background:transparent;color:inherit;font:650 clamp(.76rem,1.17vw,1rem)/1.2 var(--font-ui);cursor:pointer;
+  transition:background .22s,color .22s;
+}
+.field-options button:hover {background:#fffaf01f;}
+.field-options button[aria-pressed="true"] {background:var(--davis-amber);color:var(--davis-ink);}
+.field-panel {
+  display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.9fr);align-items:center;
+  background:#20362a;min-height:clamp(320px,36vw,480px);
+}
+.field-panel:not([hidden])+.field-panel:not([hidden]) {margin-top:14px;}
+.field-image {margin:0;align-self:stretch;min-height:100%;position:relative;overflow:hidden;background:#17271e;}
+.field-image img {
+  position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;
+  transition:transform .55s cubic-bezier(.2,.65,.25,1);
+}
+.species-portrait {min-width:0;}
+.species-portrait img {width:100%;height:auto;display:block;aspect-ratio:3 / 2;object-fit:cover;}
+.species-hero .species-portrait figcaption {display:block;color:var(--davis-white);border-color:#fff7eb45;}
+.species-portrait figcaption span {color:#e2ded3;}
+@media (hover:hover) and (pointer:fine) {
+  .field-image:hover img {transform:scale(1.04);}
+}
+.field-copy {padding:clamp(20px,4vw,63px);}
+.field-copy h2 {
+  margin:0 0 13px;color:var(--davis-white);font:600 clamp(2.2rem,4.05vw,4.65rem)/.99 var(--display-serif);
+  letter-spacing:var(--display-tracking);
+}
+.field-copy h2 a {color:inherit;text-decoration:none;}
+.field-copy h2 a:hover {text-decoration:underline;text-decoration-thickness:.04em;text-underline-offset:.13em;}
+.field-copy h2 span {color:var(--davis-amber);font-size:.65em;white-space:nowrap;}
+.field-copy>p {color:#f1eadd;margin:0 0 12px;}
+.field-copy summary,.property-feature summary {
+  min-height:44px;width:fit-content;cursor:pointer;align-content:center;text-decoration:underline;text-underline-offset:4px;font-size:.9rem;
+}
+.field-copy summary {color:var(--davis-amber);}
+.field-copy details p,.property-feature details p {font-size:.9rem;margin:0 0 10px;}
+.service-tip {border-left:2px solid currentColor;padding-left:13px;}
+.property-features {background:var(--davis-paper);color:var(--davis-ink);padding:var(--interior-space) 0;}
+.property-features h2 {margin-bottom:26px;}
+.property-feature-grid {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);gap:clamp(24px,5vw,76px);align-items:start;}
+.property-feature {border-bottom:1px solid var(--interior-rule);padding-bottom:12px;}
+.property-feature figure {margin:0 0 16px;overflow:hidden;}
+.property-feature img {display:block;width:100%;aspect-ratio:16 / 9;object-fit:cover;}
+.property-feature:first-child img {object-position:50% 48%;}
+.property-feature h2,.property-features .catalog-enquiry h2 {font-size:clamp(1.8rem,3.3vw,3.45rem);margin-bottom:7px;text-wrap:pretty;}
+.property-feature h2 a:hover {text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;}
+.property-feature p,.property-features .catalog-enquiry p {margin:0 0 4px;}
+.property-features .catalog-enquiry {margin-top:clamp(22px,4vw,61px);grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:clamp(18px,4vw,63px);background:#20362a;}
+.property-features .catalog-enquiry p {margin-bottom:14px;}
+
+/* Client-approved Auckland coverage image and linked suburb explorer */
+.coverage-explorer {background:var(--davis-paper);padding:var(--interior-space) 0;color:var(--davis-ink);}
+.coverage-layout {
+  display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  grid-template-areas:"heading map" "directory map";grid-template-rows:auto 1fr;gap:25px clamp(34px,6vw,100px);
+  align-items:start;
+}
+.coverage-heading {grid-area:heading;}
+.coverage-heading h2 {font-size:clamp(2.55rem,4.65vw,5.3rem);text-wrap:pretty;}
+.coverage-heading h2 em {display:block;}
+.coverage-heading p {margin:12px 0 0;}
+.coverage-map {grid-area:map;margin:0;min-width:0;}
+.coverage-canvas {position:relative;border:1px solid var(--interior-rule);background:#e8ebde;}
+.coverage-canvas img {width:100%;height:auto;aspect-ratio:3644/3453;display:block;}
+.coverage-map figcaption {display:flex;justify-content:space-between;gap:0 10px;flex-wrap:wrap;}
+.coverage-map figcaption a {display:inline-flex;align-items:center;gap:9px;min-height:44px;color:inherit;text-decoration:underline;text-underline-offset:3px;font-size:.83rem;}
+.coverage-map figcaption [data-map-preview] {display:none;font-weight:750;}
+.coverage-pins {position:absolute;inset:0;pointer-events:none;}
+.coverage-pin {
+  position:absolute;left:var(--pin-x);top:var(--pin-y);transform:translate(-50%,-50%);
+  display:grid;place-items:center;pointer-events:auto;background:none;border:0;
+  width:44px;height:44px;cursor:pointer;padding:0;
+}
+.coverage-pin span {
+  display:block;width:16px;height:16px;border-radius:50%;border:2px solid var(--davis-white);
+  background:#274b36;box-shadow:0 0 0 1px #203428;transition:transform .22s,background .22s;
+}
+.coverage-pin:hover span,.coverage-pin[aria-pressed="true"] span {
+  transform:scale(1.27);background:#b15d32;box-shadow:0 0 0 1px #7a3c20;
+}
+.coverage-pin.pin-mount-eden {--pin-x:32.2%;--pin-y:32%;}
+.coverage-pin.pin-glenfield {--pin-x:28.45%;--pin-y:12%;}
+.coverage-pin.pin-henderson {--pin-x:15%;--pin-y:29.7%;}
+.coverage-pin.pin-howick {--pin-x:57.7%;--pin-y:33.1%;}
+.coverage-pin.pin-manukau {--pin-x:54.8%;--pin-y:53.6%;}
+.coverage-directory {grid-area:directory;min-width:0;}
+.coverage-directory .area-finder {
+  display:grid;grid-template-columns:1fr;align-items:start;gap:8px;
+  border:0;padding:0;margin:0 0 18px;
+}
+.coverage-directory .area-finder input {min-height:48px;background:#fffaf4;border:1px solid #728271;border-radius:3px;font:inherit;}
+.coverage-directory .area-finder output {min-height:1.25em;line-height:1.25;}
+.coverage-choices {display:flex;flex-wrap:wrap;gap:6px;}
+.coverage-choices button {
+  min-height:44px;padding:6px 12px;border-radius:3px;border:1px solid var(--interior-rule);background:transparent;
+  color:var(--davis-ink);font:650 .82rem/1.3 var(--font-ui);cursor:pointer;transition:background .22s,color .22s;
+}
+.coverage-choices button:hover {background:#e0e4d6;}
+.coverage-choices button[aria-pressed="true"] {background:var(--davis-forest);color:var(--davis-white);}
+.coverage-place {border-top:1px solid var(--interior-rule);padding:10px 0 14px;}
+.coverage-explorer .coverage-place .location-card {
+  display:block;border:0;padding:4px 0;min-height:44px;text-decoration:none;background:transparent;box-shadow:none;transform:none;
+}
+.coverage-place .location-card-region {color:#46594b;font-size:.82rem;letter-spacing:0;text-transform:none;}
+.coverage-place .location-card-name {margin:4px 0 5px;color:var(--davis-ink);font:600 clamp(1.9rem,3.95vw,3.55rem)/1 var(--display-serif);letter-spacing:var(--display-tracking);}
+.coverage-place .location-card-name span {color:#825033;font-size:.7em;}
+.coverage-place .location-card:hover .location-card-name {text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px;}
+.coverage-place .location-card-context,.coverage-nearby {color:#334a3c;font-size:.91rem;}
+.coverage-nearby {margin:5px 0 0;}
+.coverage-nearby strong {display:block;color:var(--davis-ink);}
+.coverage-help {border-top:1px solid var(--interior-rule);padding-top:14px;}
+.coverage-help h3 {margin:0;font-size:1.1rem;letter-spacing:-.021em;}
+
+/* About EJ */
+.about-origins {background:var(--davis-paper);padding-block:var(--interior-space);}
+.about-origins-grid {
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:26px clamp(30px,8vw,125px);align-items:center;
+}
+.about-portrait .client-portrait {margin:0;width:100%;aspect-ratio:1 / 1;overflow:hidden;border-radius:0;}
+.about-portrait .client-portrait img {height:100%;width:100%;object-fit:cover;object-position:center 31%;}
+.about-portrait .quote {
+  margin:10px 0 3px;color:var(--davis-ink);padding:2px 0 2px 12px;
+  font:italic 400 clamp(1.55rem,2.8vw,2.6rem)/1.1 var(--display-serif);
+}
+.about-portrait .brand-slogan {display:block;font-size:.85rem;}
+.about-origins-copy h2,.about-care h2 {margin:10px 0 15px;font-size:clamp(2rem,4.3vw,4.4rem);text-wrap:pretty;}
+.about-origins-copy p {max-width:54ch;margin:0 0 13px;}
+.book-about~.job-gallery {background:#152d23;color:var(--davis-white);padding-block:var(--interior-space);}
+.book-about~.job-gallery .container {width:min(1320px,calc(100% - 2 * var(--davis-edge)));}
+.book-about~.job-gallery :is(h2,.eyebrow) {color:var(--davis-amber);}
+.book-about~.job-gallery :is(p,.gallery-hint) {color:#f1eade;}
+.book-about~.job-gallery .gallery-lead {grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);}
+.book-about~.job-gallery .gallery-item {border-radius:0;}
+.book-about~.job-gallery :is(.gallery-lead,.gallery-support,.gallery-row) {gap:12px;}
+.book-about~.job-gallery .gallery-row {margin-top:12px;}
+.book-about~.job-gallery .gallery-main {height:100%;}
+.book-about~.tuatara-story-section {background:#e5e5d9;}
+.book-about~.tuatara-story-section .tuatara-story {padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;}
+.book-about~.tuatara-story-section .tuatara-story__mark {padding:0;border:0;background:none;}
+.about-care {background:var(--davis-paper);padding-block:var(--interior-space);}
+.about-care-grid {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:15px clamp(25px,6vw,100px);}
+.about-care-list {border-top:1px solid var(--interior-rule);}
+.about-care-list article {padding:12px 0;border-bottom:1px solid var(--interior-rule);}
+.about-care-list article h3 {margin:0 0 2px;font-size:clamp(1.05rem,2vw,1.5rem);}
+.about-care-list article p {margin:0;font-size:.96rem;}
+.about-care .safety-statement {margin:0;font-size:1rem;}
+.book-about~.credentials-section {background:#f9f6ed;}
+.book-about~.credentials-section .credentials-primary {background:transparent;border:1px solid var(--interior-rule);}
+.book-about~.credentials-section .credential-units li {border-radius:0;background:#edece1;min-height:0;}
+.book-about~.community-section {background:#e6e8dc;}
+.book-about~.community-section .community-panel {padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;}
+.book-about~.section--green {padding-block:0;background:#e6e8dc;}
+.book-about~.section--green .cta {padding:18px 0 24px;min-height:0;background:transparent;color:var(--davis-ink);border-top:1px solid var(--interior-rule);}
+.book-about~.section--green .cta :is(h2,.eyebrow) {color:inherit;}
+.book-about~.section--green .cta h2 {font-size:clamp(1.5rem,3vw,2.8rem);}
+.book-about~.section--green .cta::before {display:none;}
+
+/* FAQ */
+.faq-spread {background:var(--davis-paper);padding:var(--interior-space) 0;color:var(--davis-ink);}
+.faq-spread-grid {display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr);gap:22px clamp(30px,7vw,110px);}
+.faq-help h2 {max-width:10ch;margin-bottom:10px;}
+.faq-spread .faq-list .book-faq {padding:0;border:0;border-bottom:1px solid var(--interior-rule);}
+.faq-spread .faq-list .book-faq:first-child {border-top:1px solid var(--interior-rule);}
+.faq-spread .book-faq summary {
+  cursor:pointer;min-height:65px;padding:8px 2px;font-size:clamp(1.05rem,1.9vw,1.5rem);text-wrap:pretty;
+}
+.faq-spread .book-faq summary::after {
+  content:'+';flex:0 0 34px;min-height:34px;display:grid;place-items:center;
+  border:1px solid var(--interior-rule);border-radius:50%;color:var(--davis-ink);
+  font-size:1.3rem;transition:background .22s,color .22s;
+}
+.faq-spread .book-faq[open] summary::after {content:'−';background:var(--davis-ink);color:var(--davis-white);}
+.faq-spread .book-faq p {margin:3px 42px 19px 2px;color:#354b3e;max-width:62ch;}
+@media (prefers-reduced-motion:no-preference) {
+  .faq-spread .book-faq[open] p {animation:faq-answer .24s ease-out both;}
+  @keyframes faq-answer {
+    from {transform:translateY(-4px);opacity:.5}
+    to {transform:none;opacity:1}
+  }
+  @supports (interpolate-size: allow-keywords) and selector(details::details-content) {
+    .faq-spread .book-faq {interpolate-size:allow-keywords;}
+    .faq-spread .book-faq::details-content {
+      block-size:0;overflow:clip;
+      transition:block-size .24s ease,content-visibility .24s allow-discrete;
+    }
+    .faq-spread .book-faq[open]::details-content {block-size:auto;}
+    .faq-spread .book-faq[open] p {animation:none;}
+  }
+}
+
+/* Inquiry shell. The form itself is hosted and rendered by ServiceM8. */
+.inquiry-intro {padding:clamp(93px,9vw,142px) 0 clamp(35px,6vw,80px);}
+.inquiry-intro h1 {max-width:16ch;}
+.inquiry-intro p {margin:12px 0 15px;max-width:48ch;color:#eee9dc;}
+.inquiry-intro .story-button {border-radius:100px;min-height:44px;background:var(--davis-amber);color:var(--davis-ink);}
+.inquiry-page .contact-section {background:var(--davis-paper);padding-block:clamp(26px,4.35vw,64px) var(--interior-space);}
+.inquiry-grid {display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,.8fr);gap:clamp(22px,4.6vw,75px);align-items:start;}
+.inquiry-page #request-service {
+  background:#fff;border:1px solid var(--interior-rule);border-radius:4px;animation:none;box-shadow:none;backdrop-filter:none;scroll-margin-top:76px;
+}
+.inquiry-page .servicem8-intro {padding:clamp(16px,3.5vw,40px);background:#e6e8dc;border-bottom:1px solid var(--interior-rule);}
+.inquiry-page .servicem8-intro h2 {font-size:clamp(1.9rem,3.45vw,3.75rem);text-wrap:pretty;margin-bottom:8px;}
+.inquiry-page .servicem8-intro small {color:#3a5043;}
+.inquiry-page .form-direct {display:inline-flex;align-items:center;min-height:44px;}
+.inquiry-page .servicem8-fallback {background:#f9f7ee;}
+.inquiry-page .servicem8-fallback .btn {border-radius:100px;background:var(--davis-forest);color:var(--davis-white);}
+.inquiry-aside {min-width:0;}
+.inquiry-portrait {margin:0;}
+.inquiry-portrait img {display:block;width:100%;height:auto;aspect-ratio:4 / 3;object-fit:cover;object-position:51% 42%;}
+.inquiry-portrait figcaption {display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--interior-rule);font-size:.84rem;}
+.inquiry-portrait figcaption small {display:block;font-size:.67rem;letter-spacing:.04em;}
+.inquiry-portrait .contact-ej-signoff {color:var(--davis-ink);font:italic 400 1.2rem/1 var(--display-serif);}
+.inquiry-details {padding:21px 0 0;}
+.inquiry-details h2 {font-size:clamp(2.05rem,3.6vw,3.5rem);margin:0 0 8px;}
+.inquiry-details .contact-item {border-color:var(--interior-rule);color:var(--davis-ink);}
+.inquiry-details .contact-item[href]:hover,.inquiry-details .contact-social:hover {color:#7e4327;}
+.inquiry-details .contact-label {color:#40574a;}
+.inquiry-details .contact-social {color:var(--davis-ink);min-height:44px;margin-top:5px;}
+
+@media (max-width:850px) {
+  .inquiry-grid {grid-template-columns:1fr;}
+  .inquiry-aside {display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;}
+  .inquiry-details {padding-top:0;}
+}
+@media (max-width:720px) {
+  .coverage-layout {grid-template-columns:1fr;grid-template-areas:"heading" "map" "directory";grid-template-rows:auto;}
+  .coverage-map figcaption [data-map-preview] {display:inline-flex;}
+}
+@media (max-width:700px) {
+  .field-heading,.field-panel,.property-feature-grid,.about-origins-grid,.about-care-grid,.faq-spread-grid {grid-template-columns:1fr;}
+  .field-options {grid-template-columns:repeat(auto-fit,minmax(78px,1fr));}
+  .field-panel {min-height:0;}
+  .field-image {min-height:0;aspect-ratio:16/10;}
+  .property-features .catalog-enquiry {grid-template-columns:1fr;gap:0;}
+  .property-features .catalog-enquiry>img {height:auto;aspect-ratio:16/9;object-fit:cover;}
+  .property-features .catalog-enquiry>div {padding:18px;}
+  .about-portrait {max-width:500px;}
+  .faq-help h2 {max-width:none;}
+  .inquiry-aside {grid-template-columns:1fr;}
+  .inquiry-portrait img {aspect-ratio:16 / 10;}
+}
+@media (max-width:560px) {
+  .book-about~.job-gallery .gallery-lead {grid-template-columns:1fr;}
+  .book-about~.job-gallery .gallery-row {grid-template-columns:1fr 1fr;}
+  .book-about~.job-gallery .gallery-residential {grid-column:1/-1;width:100%;max-width:none;aspect-ratio:4/3;}
+}
+@media (prefers-reduced-motion:reduce) {
+  :is(.field-gallery,.coverage-explorer,.faq-spread) * {transition:none;}
+  .field-image:hover img {transform:none;}
+}

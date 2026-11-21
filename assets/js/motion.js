@@ -1,83 +1,58 @@
 function initialisePropertyMotion() {
   const {gsap, ScrollTrigger} = window;
-  const main = document.querySelector('main');
-  if (!gsap || !ScrollTrigger || !main) return;
+  const arrival = document.querySelector('.arrival');
+  if (!gsap || !ScrollTrigger || !arrival) return;
   gsap.registerPlugin(ScrollTrigger);
+  const home = arrival.querySelector('.film-home');
+  const view = home.querySelector('.film-view');
+  const inspection = arrival.querySelector('.film-inspection');
   let media;
+
   function start() {
     media = gsap.matchMedia();
     media.add('(prefers-reduced-motion: no-preference)', () => {
+      arrival.classList.add('camera-linked');
       const mobile = matchMedia('(max-width:760px)').matches;
-      const opening = main.querySelector('.property-opening');
-      const plane = main.querySelector('.camera-plane');
-      const sectionTrigger = section => ({trigger:section,start:'top 94%',end:'top 49%',scrub:.65,invalidateOnRefresh:true});
-      const removeListeners = [];
-      if (plane) {
-        gsap.to(plane,{'--camera-scale':mobile?1.055:1.23,ease:'none',scrollTrigger:{trigger:opening,start:'top top',end:'bottom top',scrub:.8}});
-        const inside = main.querySelector('[data-view="interior"] img');
-        if (inside) {
-          let dissolve;
-          let entering;
-          const approach = ScrollTrigger.create({trigger:opening,start:'top -8%',end:'bottom 6%',
-            onUpdate:self=>{
-              if (!entering && self.progress>0) {
-                entering=inside.cloneNode();
-                entering.alt='';entering.sizes='100vw';entering.loading='eager';entering.className='room-transition';
-                opening.querySelector('.opening-view').append(entering);
-                dissolve=gsap.quickSetter(entering,'opacity');
-              }
-              if (dissolve) dissolve(Math.min(.95,self.progress*self.progress));
-            }
-          });
-          removeListeners.push(()=>{approach.kill();entering?.remove();});
-        }
-        if (!mobile && matchMedia('(hover:hover) and (pointer:fine)').matches) {
-          let cancelled=false,releaseDepth;
-          const enableDepth = async () => {
-            if (navigator.connection?.saveData) return;
-            try {
-              const {mountDepthView}=await import('./property-depth.mjs');
-              await plane.querySelector('img').decode();
-              if (!cancelled) releaseDepth=mountDepthView(plane);
-            } catch { /* The photograph stays visible on unsupported devices. */ }
-          };
-          opening.addEventListener('pointermove',enableDepth,{once:true});
-          removeListeners.push(()=>{cancelled=true;opening.removeEventListener('pointermove',enableDepth);releaseDepth?.();});
-          const x = gsap.quickTo(plane,'--camera-x',{duration:.65,ease:'power2.out'});
-          const y = gsap.quickTo(plane,'--camera-y',{duration:.65,ease:'power2.out'});
-          const move = event => {
-            const rect = opening.getBoundingClientRect();
-            x(((event.clientX-rect.left)/rect.width-.5)*14+'px');
-            y(((event.clientY-rect.top)/rect.height-.5)*9+'px');
-          };
-          const leave = () => { x('0px');y('0px'); };
-          opening.addEventListener('pointermove',move);
-          opening.addEventListener('pointerleave',leave);
-          removeListeners.push(() => { opening.removeEventListener('pointermove',move); opening.removeEventListener('pointerleave',leave); });
-        }
-      }
-      for (const section of main.querySelectorAll('.story-section,.comfort-scene,.return-scene,.habitat-section')) {
-        const title = section.querySelector('h2');
-        if (title) gsap.from(title,{y:mobile?14:30,clipPath:'inset(0 0 9% 0)',ease:'none',scrollTrigger:sectionTrigger(title)});
-        const shot = section.querySelector('.tall-shot img,.plan-grid figure img,.portrait-grid figure img,.comfort-image img,.return-image img');
-        if (shot) gsap.fromTo(shot,{scale:1.065},{scale:1,ease:'none',scrollTrigger:{trigger:section,start:'top bottom',end:'bottom top',scrub:.8}});
-      }
-      const steps = main.querySelector('.process-steps');
-      if (steps) gsap.from(steps.children,{x:mobile?8:20,stagger:.2,ease:'none',scrollTrigger:sectionTrigger(steps)});
-      const bar = document.querySelector('.nav-wrap');
-      if (bar) gsap.to(bar,{'--page-read':1,ease:'none',scrollTrigger:{start:0,end:'max',scrub:true}});
-      let timer;
-      const refresh = new ResizeObserver(() => {
-        clearTimeout(timer);
-        timer = setTimeout(() => ScrollTrigger.refresh(),120);
+      const backdrop = inspection.querySelector('.inspection-media');
+      const frameHeight = () => document.documentElement.clientHeight;
+      const cameraRange = {trigger:inspection,start:'top bottom',end:'top top',invalidateOnRefresh:true};
+      // Offset the incoming image against its own scroll until its section
+      // reaches the top. Both photographs fill the frame during the dissolve.
+      gsap.from(backdrop,{y:()=>-frameHeight(),ease:'none',
+        scrollTrigger:{...cameraRange,scrub:true}});
+      const approach = gsap.timeline({
+        defaults:{ease:'none'},
+        scrollTrigger:{...cameraRange,scrub:.55}
       });
-      refresh.observe(main);
-      return () => { refresh.disconnect();clearTimeout(timer);removeListeners.forEach(remove=>remove()); };
+      approach.to(view,{scale:mobile?1.13:1.32},0)
+        .to(home.querySelectorAll('.film-home-copy,.film-down'),{opacity:0,duration:.28},0)
+        .from(backdrop,{opacity:0,duration:.78},.22);
+
+      let move, leave;
+      if (!mobile && matchMedia('(hover:hover) and (pointer:fine)').matches) {
+        const x = gsap.quickTo(view,'x',{duration:.65,ease:'power2.out'});
+        const y = gsap.quickTo(view,'y',{duration:.65,ease:'power2.out'});
+        gsap.set(view,{scale:1.018});
+        move = event => {
+          const rect=home.getBoundingClientRect();
+          x((event.clientX/rect.width-.5)*12);
+          y(((event.clientY-rect.top)/rect.height-.5)*9);
+        };
+        leave = () => {x(0);y(0);};
+        home.addEventListener('pointermove',move);
+        home.addEventListener('pointerleave',leave);
+      }
+      return () => {
+        arrival.classList.remove('camera-linked');
+        if (move) home.removeEventListener('pointermove',move);
+        if (leave) home.removeEventListener('pointerleave',leave);
+      };
     });
   }
+
   start();
-  addEventListener('pagehide',() => media?.revert());
-  addEventListener('pageshow',event => { if (event.persisted) start(); });
+  addEventListener('pagehide',()=>media.revert());
+  addEventListener('pageshow',event=>{if(event.persisted)start();});
 }
 
 (() => {

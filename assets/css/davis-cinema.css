@@ -1,0 +1,165 @@
+/* Shared art direction for the public site. */
+:root {
+  --davis-forest:#14251c;
+  --davis-ink:#172c21;
+  --davis-paper:#f2efe6;
+  --davis-white:#fffaf0;
+  --davis-amber:#ffc69a;
+  --davis-edge:clamp(20px,6.15vw,120px);
+}
+html:has(.site-header-inner) {scroll-padding-top:16px;}
+body:has(.site-header-inner) main {padding-top:0;}
+[data-header]:has(.site-header-inner) {
+  position:fixed;inset:0 0 auto;height:0;z-index:90;pointer-events:none;
+}
+.site-header-inner,.site-footer-inner {
+  width:min(1590px,calc(100% - 2 * var(--davis-edge)));margin-inline:auto;
+}
+.site-header-inner {
+  display:flex;justify-content:flex-end;padding-top:clamp(16px,2.5vw,32px);
+}
+.site-menu {position:relative;pointer-events:auto;color:#fffaf0;}
+.site-menu summary {
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  min-height:46px;padding:0 16px;border:1px solid #fff8ed50;border-radius:100px;
+  background:#14251c;color:#fffaf0;list-style:none;cursor:pointer;
+  font:650 .88rem/1 var(--font-ui);
+}
+.site-menu summary:hover {background:#2a3c30;}
+.site-menu summary::-webkit-details-marker {display:none;}
+.menu-close-label,.site-menu[open] .menu-open-label {display:none;}
+.site-menu[open] .menu-close-label {display:inline;}
+.site-menu-icon {display:block;width:20px;height:14px;position:relative;}
+.site-menu-icon::before,.site-menu-icon::after {
+  content:"";position:absolute;inset:4px 0 auto;height:1.5px;background:currentColor;
+}
+.site-menu-icon::after {top:10px;left:6px;}
+.site-menu[open] .site-menu-icon::before {top:7px;transform:rotate(45deg);}
+.site-menu[open] .site-menu-icon::after {inset:7px 0 auto;transform:rotate(-45deg);}
+.site-menu nav {
+  position:absolute;inset:calc(100% + 8px) 0 auto auto;width:min(270px,calc(100vw - 40px));
+  max-height:calc(100dvh - 110px);overflow:auto;
+  padding:10px 16px 16px;border:1px solid #fff8ed45;border-radius:14px;
+  background:#14251c;color:#fffaf0;box-shadow:0 12px 28px #101a1448;
+}
+.site-menu nav a {
+  display:flex;align-items:center;min-height:44px;border-bottom:1px solid #fff8ed29;
+  color:inherit;text-decoration:none;font:650 .91rem/1.4 var(--font-ui);
+}
+.site-menu nav a:is(:hover,[aria-current]) {color:var(--davis-amber);}
+.site-menu nav .site-quote {
+  justify-content:center;gap:12px;margin-top:13px;padding:0 12px;
+  border:0;border-radius:100px;background:var(--davis-amber);color:var(--davis-ink);
+}
+.site-menu nav .site-quote:hover {background:#ffdec4;color:var(--davis-ink);}
+.site-skip {position:absolute;left:20px;top:-110px;background:#fff;color:var(--davis-ink);padding:10px 16px;z-index:4;pointer-events:auto;}
+.site-skip:focus {top:9px;}
+.site-menu :is(a,summary):focus-visible,.pest-choices button:focus-visible {
+  outline:3px solid #ffc69a;outline-offset:3px;
+}
+
+.pest-tools {align-items:center;}
+.pest-choices {
+  display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px;
+  padding:4px;border:1px solid #f4eee982;border-radius:100px;background:#14251ceb;
+}
+.pest-choices button {
+  appearance:none;border:0;border-radius:100px;cursor:pointer;white-space:nowrap;
+  background:transparent;color:#fffaf0;font:650 .84rem/1.2 var(--font-ui);
+  min-height:44px;padding:0 clamp(11px,1.4vw,20px);
+}
+.pest-choices button:hover {background:#ffffff24;}
+.pest-choices button[aria-pressed="true"] {background:var(--davis-amber);color:#17251b;}
+
+/* Wide edge-to-edge openings for the editorial, property and coverage routes. */
+html:has(.book-opening,.species-hero) {background:var(--davis-paper);}
+body:has(.book-opening,.species-hero) {background:var(--davis-paper);color:var(--davis-ink);}
+:where(.book-opening,.species-hero) .book-crumb {color:#deddd0;}
+:where(.book-opening,.species-hero) .chapter-label {color:#f7d4b7;}
+.book-opening,.species-hero {
+  position:relative;isolation:isolate;background:var(--davis-forest);color:var(--davis-white);
+  border:0;
+}
+:is(.book-opening,.species-hero) :is(h1 em,.book-crumb a) {color:var(--davis-amber);}
+:is(.book-opening,.species-hero) :is(.book-copy p,.species-layout>div>p) {color:#f4eee2;}
+:is(.book-opening,.species-hero) .story-button {
+  border-radius:100px;background:var(--davis-amber);color:var(--davis-ink);
+}
+:is(.book-opening,.species-hero) .story-button:hover {background:#ffdec4;color:var(--davis-ink);}
+.book-opening .book-grid,.species-hero .species-layout {
+  min-height:clamp(470px,75svh,790px);padding-block:clamp(88px,8vw,130px);align-items:center;
+}
+.book-opening :is(.book-copy,.book-crumb),.species-hero .species-layout>div {position:relative;z-index:2;}
+.book-opening .book-grid h1,.species-hero h1 {text-wrap:balance;}
+.book-opening.book-local .book-grid h1 {max-width:18ch;}
+.book-opening .book-crumb,.species-hero .book-crumb {margin-bottom:22px;}
+
+.book-opening .book-grid,.species-hero .species-layout {width:min(1590px,calc(100% - 2 * var(--davis-edge)));}
+.book-opening:not(.book-services,.book-contact,.book-faqs) .book-grid {
+  display:flex;align-items:center;
+}
+.book-opening:not(.book-services,.book-contact,.book-faqs) .book-copy {width:min(66%,760px);}
+.book-opening:not(.book-services,.book-contact,.book-faqs) .book-photo {
+  position:absolute;inset:0 0 0 30%;margin:0;z-index:0;
+}
+.book-opening:not(.book-services,.book-contact,.book-faqs) .book-photo::after {
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,#14251c 0%,#14251cba 22%,#14251c14 65%,transparent 90%);
+}
+.book-opening:not(.book-services,.book-contact,.book-faqs) .book-photo img {height:100%;width:100%;object-fit:cover;}
+.book-about .book-photo img {object-position:center 42%;}
+.book-residential-pest-control .book-photo img {object-position:center 54%;}
+.book-opening:not(.book-services,.book-contact,.book-faqs) figcaption {
+  position:absolute;z-index:2;right:var(--davis-edge);bottom:22px;gap:14px;
+  color:#fff;background:#14251c;border:0;padding:8px 12px;
+}
+.book-contact .book-grid,.book-faqs .book-grid {min-height:0;padding-block:clamp(88px,7vw,105px) 58px;}
+.book-contact .book-photo img,.book-faqs .book-photo img {height:clamp(210px,26vw,390px);}
+.book-contact .book-grid h1,.book-faqs .book-grid h1 {font-size:clamp(3rem,5.65vw,6rem);}
+.book-contact figcaption,.book-contact figcaption .contact-ej-signoff {color:#fffaf0;}
+.book-services .atlas-cover,.species-hero .specimen-plate {
+  background:#e9e5d6;color:var(--davis-ink);border:0;box-shadow:none;
+}
+.book-services .atlas-cover img,.species-hero .specimen-plate img {mix-blend-mode:multiply;}
+.species-hero .specimen-plate {align-self:center;}
+.species-hero .specimen-plate img {height:clamp(210px,26vw,380px);}
+.species-hero .specimen-plate figcaption {display:flex;justify-content:space-between;gap:12px;}
+.habitat-section {background:#e6e8dc;}
+body[data-page="services"] .catalog {
+  max-width:1150px;grid-template-columns:1fr;row-gap:0;
+}
+body[data-page="services"] .catalog-row {
+  grid-template-columns:clamp(82px,14vw,175px) minmax(0,1fr);align-items:center;
+  padding:clamp(18px,3vw,36px) 0;gap:clamp(18px,4vw,60px);
+}
+body[data-page="services"] .catalog-row::before {content:none;}
+.catalog-row img {max-width:175px;}
+body[data-page="services"] .catalog h2 {font-size:clamp(1.65rem,3.4vw,3.2rem);}
+.book-opening~.section .catalog-enquiry {background:var(--davis-forest);}
+.faq-list .book-faq {border-bottom:1px solid #1d402b38;}
+.faq-list .book-faq summary {min-height:64px;padding:13px 6px;}
+.faq-list .book-faq summary:hover {color:#8f430d;}
+.contact-section #request-service {background:#fff;border-color:#213c2c24;border-radius:4px;}
+.contact-section .contact-info {background:var(--davis-forest);border-radius:4px;}
+@media (min-width: 761px) {
+  .book-opening.book-about .book-photo {left:39%;}
+  .book-opening.book-about .book-photo::after {
+    background:linear-gradient(90deg,#14251c 0%,#14251c83 17%,transparent 50%);
+  }
+}
+@media (max-width: 760px) {
+  .pest-choices {max-width:100%;}
+  .pest-choices button {font-size:.79rem;padding:0 10px;}
+  .book-opening .book-grid,.species-hero .species-layout {min-height:0;padding-block:88px 42px;}
+  .book-opening:not(.book-services,.book-contact,.book-faqs) .book-grid {
+    flex-direction:column;align-items:stretch;padding-top:0;
+  }
+  .book-opening:not(.book-services,.book-contact,.book-faqs) .book-photo {
+    order:-1;position:relative;inset:auto;margin-inline:calc(0px - var(--davis-edge));
+  }
+  .book-opening:not(.book-services,.book-contact,.book-faqs) .book-photo img {height:clamp(200px,60vw,390px);}
+  .book-opening:not(.book-services,.book-contact,.book-faqs) .book-photo::after {background:linear-gradient(0deg,#14251c 0%,#14251c12 44%,transparent 78%);}
+  .book-opening:not(.book-services,.book-contact,.book-faqs) .book-copy {width:100%;}
+  .book-opening:not(.book-services,.book-contact,.book-faqs) figcaption {font-size:.76rem;bottom:12px;}
+  .species-hero .specimen-plate img {height:185px;}
+}

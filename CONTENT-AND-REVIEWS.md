@@ -18,6 +18,6 @@ The review database contains names, ratings, optional service names, messages an
 
 ## Design and motion system
 
-The public site uses the original Davis lockup, client photographs and local fonts. The homepage and its eight chapters are generated from `scripts/property-story.mjs`. The build renders shared navigation, content and booking links into the HTML. The property illustrations, seven pest plates, accessible inspection controls and optional motion are documented in [the redesign direction](docs/redesign-direction.md). The homepage opens directly on the property. The standalone intro remains available at `/intro/`.
+The public site uses the original Davis lockup, client photographs and local fonts. The five homepage scenes are generated from `scripts/property-story.mjs`. The homepage opens directly on the property and uses optional scroll-linked camera motion. The standalone intro remains available at `/intro/`. [Cinematic UX review](docs/cinematic-ux-review.md)
 
-The six featured Google reviews come from `content/featured-google-reviews.json`. The production `/reviews/` URL redirects to `/#customer-voices`. Keep the Google comments separate from any historical website-review moderation records. See [the redesign audit](docs/redesign-audit.md) for the verified public flows.
+The six Google reviews come from `content/featured-google-reviews.json` and appear in full at `/about/#customer-reviews`. The production `/reviews/` URL redirects to the homepage testimonial at `/#customer-voices`. Keep the Google comments separate from any historical website-review moderation records.

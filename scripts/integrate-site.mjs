@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import renderShell from '../assets/js/shell.js';
-import {renderHome} from './property-story.mjs';
+import {openingPreloads, renderHome, renderReviews} from './property-story.mjs';
+import {renderAreaExplorer} from './area-explorer.mjs';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -14,25 +15,22 @@ const versions = {
 };
 const services = JSON.parse(fs.readFileSync(path.join(root,'content/services.json'),'utf8'));
 const locations = JSON.parse(fs.readFileSync(path.join(root,'content/locations.json'),'utf8')).filter(item=>item.status==='published');
-const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const featuredReviews = JSON.parse(fs.readFileSync(path.join(root,'content/featured-google-reviews.json'),'utf8'));
 if (featuredReviews.reviews.length !== 6 || featuredReviews.reviews.some(item => !Number.isInteger(item.rating) || item.rating < 1 || item.rating > 5 || !item.author?.trim() || !Array.isArray(item.paragraphs) || !item.paragraphs.length || item.paragraphs.some(paragraph => !paragraph.trim()))) throw Error('Featured Google reviews need six attributed full comments');
 const original = ['index.html','about/index.html','residential-pest-control/index.html','commercial-pest-control/index.html','services/index.html','service-areas/index.html','faqs/index.html','contact/index.html'];
 const generated = [...services.map(item=>`services/${item.slug}/index.html`),...locations.map(item=>`pest-control/${item.slug}/index.html`)];
-const fallbackNav = `<nav class="noscript-nav" aria-label="Main navigation"><a href="/">Davis Pest Solutions</a><a href="/services/">Services</a><a href="/service-areas/">Areas we serve</a><a href="/about/">About</a><a href="/faqs/">FAQs</a><a href="/contact/#request-service">Request a quote</a></nav>`;
 for (const name of [...original,...generated]) {
   const file = path.join(root,name);
   let html = fs.readFileSync(file,'utf8');
   html = html.replace(/\s*<link rel="preconnect" href="https:\/\/fonts\.googleapis\.com"\s*\/>/g,'').replace(/\s*<link rel="preconnect" href="https:\/\/fonts\.gstatic\.com" crossorigin\s*\/>/g,'').replace(/\s*<link\s+href="https:\/\/fonts\.googleapis\.com\/css2\?[^>]+\/>/g,'');
   const page = html.match(/<body data-page="([^"]+)"/)?.[1] || 'home';
   const {header,footer} = renderShell(page,'/'+name.replace(/index\.html$/,''));
-  html = html.replace(/<header data-header>[\s\S]*?<\/header>/,()=>`<header data-header>${header}<noscript>${fallbackNav}</noscript></header>`);
+  html = html.replace(/<header data-header>[\s\S]*?<\/header>/,()=>`<header data-header>${header}</header>`);
   const footerPattern = html.includes('<!--footer-end-->') ? /<div data-footer>[\s\S]*?<!--footer-end-->/ : /<div data-footer>\s*(?:<footer class="fallback-footer">[\s\S]*?<\/footer>)?\s*<\/div>/;
   html = html.replace(footerPattern,()=>`<div data-footer>${footer}</div><!--footer-end-->`);
   html = html.replace(/<script src="\/assets\/js\/shell\.js[^"]*"[^>]*>\s*<\/script>/g,'');
   if (name !== 'index.html' && !html.includes('/assets/css/premium.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/premium.css"></head>');
-  if (name !== 'index.html' && !html.includes('/assets/css/art-direction.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/art-direction.css"></head>');
-  if (!html.includes('rel="preload" as="font"')) html = html.replace('</head>','<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Manrope-latin.woff2" crossorigin><link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Inter-latin.woff2" crossorigin></head>');
+  if (!['index.html', 'services/index.html'].includes(name) && !html.includes('/assets/css/art-direction.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/art-direction.css"></head>');
   html = html.replace(/<script src="\/assets\/vendor\/(?:gsap|ScrollTrigger)\.min\.js" defer><\/script>/g,'');
   if (name !== 'index.html') html = html.replace(/<script src="\/assets\/js\/motion\.js[^"]*" defer><\/script>/g,'');
   else if (!html.includes('/assets/js/motion.js')) html = html.replace('</body>','<script src="/assets/js/motion.js" defer></script></body>');
@@ -40,38 +38,50 @@ for (const name of [...original,...generated]) {
     .replace(/\/assets\/js\/site\.js(?:\?v=[^"']+)?/g, `/assets/js/site.js?v=${versions.site}`)
     .replace(/\/assets\/js\/motion\.js(?:\?v=[^"']+)?/g, `/assets/js/motion.js?v=${versions.motion}`)
     .replace(/\/assets\/css\/art-direction\.css(?:\?v=[^"']+)?/g, `/assets/css/art-direction.css?v=${versions.art}`);
-  if (!html.includes('/assets/css/property.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/property.css"></head>');
+  if (page === 'home') html = html.replace(/<link rel="stylesheet" href="\/assets\/css\/property\.css[^"]*">/,'');
+  else if (!html.includes('/assets/css/property.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/property.css"></head>');
   if (!html.includes('/assets/js/property.js')) html = html.replace('</body>','<script src="/assets/js/property.js" defer></script></body>');
+  if (!html.includes('/assets/css/davis-cinema.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/davis-cinema.css"></head>');
+  if (!html.includes('/assets/css/closing.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/closing.css"></head>');
+  if (name !== 'index.html' && !html.includes('/assets/css/interior.css')) html = html.replace('</head>','<link rel="stylesheet" href="/assets/css/interior.css"></head>');
+  if (['services/index.html', 'service-areas/index.html', 'about/index.html'].includes(name) && !html.includes('/assets/js/interior.js')) html = html.replace('</body>','<script src="/assets/js/interior.js" defer></script></body>');
+  html = html.replace('<main id="main">','<main id="main" tabindex="-1">');
+  if (generated.includes(name)) html = html.replace('<section class="section"><div class="container cta">','<section class="footer-invitation"><div class="container cta">');
   fs.writeFileSync(file,html);
 }
 const homePath = path.join(root,'index.html');
-const home = fs.readFileSync(homePath,'utf8').replace(/<main\b[\s\S]*?<\/main>/, () => renderHome(services, locations, featuredReviews));
+const home = fs.readFileSync(homePath,'utf8')
+  .replace(/\r?\n\s*<link rel="preload" as="image"[^>]*>/g,'')
+  .replace(/<meta name="viewport"[^>]*>/,tag=>tag+openingPreloads)
+  .replace(/<main\b[\s\S]*?<\/main>/, () => renderHome(featuredReviews));
 fs.writeFileSync(homePath,home);
-const servicesPath = path.join(root,'services/index.html');
-let servicesHtml = fs.readFileSync(servicesPath,'utf8');
-for (const [heading,slug] of Object.entries({'Cockroach Control':'cockroach-control','Rat &amp; Mouse Control':'rodent-control','Ant Control':'ant-control','Fly Control':'fly-control','Wasp Control':'wasp-control','Flea Treatment':'flea-treatment','Spider Control':'spider-control'})) {
-  servicesHtml = servicesHtml.replace(`<h2>${heading}</h2>`,`<h2><a class="service-heading-link" href="/services/${slug}/">${heading} <span aria-hidden="true">↗</span></a></h2>`);
-}
-fs.writeFileSync(servicesPath,servicesHtml);
-const areasPath = path.join(root,'service-areas/index.html');
-let areas = fs.readFileSync(areasPath,'utf8');
-for (const item of locations) if (!item.directoryContext) throw Error(`Missing directory context for ${item.slug}`);
-const directory = `<section class="section location-directory" id="suburb-directory"><div class="container"><div class="directory-heading"><div><span class="eyebrow">Local pages</span><h2>Find a starting point.</h2></div><p>Explore a published suburb page below, or tell Davis your address to confirm service availability.</p></div><div class="location-cards">${locations.map(item=>`<a class="location-card" href="/pest-control/${item.slug}/"><span class="location-card-region">${escapeHtml(item.region)}</span><h3 class="location-card-name">${escapeHtml(item.name)} <span aria-hidden="true">↗</span></h3><span class="location-card-context">${escapeHtml(item.directoryContext)}</span></a>`).join('')}<div class="location-card location-card--help"><span class="location-card-region">Address check</span><h3 class="location-card-name">Beyond these suburbs?</h3><p class="location-card-context">The map covers more of Auckland than the published page list. Send Davis your address to confirm availability.</p><a class="text-link" href="/contact/#request-service">Ask about your address ↗</a></div></div></div></section>`;
-const finder = `<div class="area-finder" hidden><label for="area-search">Find your suburb or region</label><input type="search" id="area-search" placeholder="e.g. Papatoetoe" autocomplete="off"><output aria-live="polite"></output></div>`;
-const revisedDirectory = directory.replace('<div class="location-cards">',finder+'<div class="location-cards">').replace('Find a starting point.', 'Pest Control Across Auckland.').replace('Beyond these suburbs?', "Don't see your suburb?");
-if (areas.includes('id="suburb-directory"')) areas = areas.replace(/<section class="section location-directory" id="suburb-directory">[\s\S]*?<\/section>/,revisedDirectory);
-else areas = areas.replace('</main>',revisedDirectory+'\n    </main>');
-for (const item of locations) {
-  const heading = '<span class="location-card-region">'+escapeHtml(item.region)+'</span>';
-  areas = areas.replace(heading, '<span class="location-card-region" data-nearby="'+escapeHtml(item.nearby.join(', '))+'">'+escapeHtml(item.region)+'</span>');
-}
-fs.writeFileSync(areasPath,areas);
+const aboutPath = path.join(root,'about/index.html');
+const about = fs.readFileSync(aboutPath,'utf8')
+  .replace(/\s*<section\b[^>]+id="customer-reviews"[\s\S]*?<\/section>/g,'')
+  .replace('</main>', () => `\n${renderReviews(featuredReviews)}\n</main>`);
+fs.writeFileSync(aboutPath,about);
+const areasPath = path.join(root, 'service-areas/index.html');
+const areas = fs.readFileSync(areasPath,'utf8')
+  .replace(/<section class="section area-coverage"[\s\S]*?<\/section>\s*/, '')
+  .replace(/<section[^>]+id="suburb-directory"[\s\S]*?<\/section>/, () => renderAreaExplorer(locations));
+fs.writeFileSync(areasPath, areas);
+const notFound = path.join(root, '404.html');
+const fallback = fs.readFileSync(notFound, 'utf8');
+if (!fallback.includes('/assets/css/closing.css')) fs.writeFileSync(notFound, fallback.replace('</head>', '<link rel="stylesheet" href="/assets/css/closing.css"></head>'));
 // Each deployed page must request the CSS/JS built with it. Hostinger and browsers
 // can otherwise keep older files for a month while the HTML has already changed.
-for (const name of [...original, ...generated, 'intro/index.html', '404.html']) {
+const typography = '<link rel="stylesheet" href="/assets/css/typography.css">';
+const headline = '<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/CormorantGaramond-Regular-latin.woff2" crossorigin>';
+const homeItalic = '<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/CormorantGaramond-Italic-latin.woff2" crossorigin>';
+const bodyFont = '<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Manrope-variable-latin.woff2" crossorigin>';
+for (const name of [...original, ...generated, 'intro/index.html', 'pest-control/papatoetoe/index.html', '404.html']) {
   const file = path.join(root, name);
   if (!fs.existsSync(file)) continue;
-  const html = fs.readFileSync(file, 'utf8').replace(
+  const html = fs.readFileSync(file, 'utf8')
+    .replace(/<link rel="preload" as="font"[^>]*>/g, '')
+    .replace(/<link rel="stylesheet" href="\/assets\/css\/typography\.css[^"]*">/g, '')
+    .replace('</head>', () => `${headline}${name === 'index.html' ? homeItalic + bodyFont : ''}${typography}</head>`)
+    .replace(
     /(?<=["'\s])\/assets\/(?:css|js|images(?:\/[a-zA-Z0-9_.-]+)*)\/[a-zA-Z0-9_.-]+\.(?:css|mjs|js|png|jpe?g|webp|svg|avif|gif)(?:\?v=[a-f0-9]+)?/g,
     asset => {
       const relative = asset.split('?')[0].slice(1);
